@@ -1,7 +1,7 @@
 # Telegram-bot-for-animal-shelter
 Проект:
 
-Telegramm-бот для приюта животных.
+Telegram-бот для приюта животных.
 
 Описание функционала:
 
