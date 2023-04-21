@@ -24,7 +24,7 @@ public class Pet {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "pet_type")
+    @Column(name = "pet_type", nullable = false)
     private PetType petType;
 
     @ManyToOne
