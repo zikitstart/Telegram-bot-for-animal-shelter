@@ -1,25 +1,37 @@
 package animal_shelter.telegram_bot_for_animal_shelter.model;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import javax.persistence.*;
 
+// Класс для описания домашнего питомца
+@Entity
+@Table(name = "pet")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Pet {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "age_in_months")
     private Integer ageInMonths;
+
+    @Column(name = "name")
     private String name;
-    private Customer customer;
 
-    // Описание файла с фото питомца
-    private String filePath;
-    private Long fileSize;
-    private String mediaType;
-    private byte[] photo; // фото
+    @Column(name = "pet_type")
+    private PetType petType;
 
-    private LocalDateTime decisionDate; // дата принятия решения по усыновлению
-    private Shelter shelter; // ссылка на приют питомца
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
 }
