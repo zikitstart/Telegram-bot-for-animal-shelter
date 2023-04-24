@@ -1,4 +1,8 @@
 package animal_shelter.telegram_bot_for_animal_shelter.service.impl;
 
-public class InfoServiceImpl {
+import animal_shelter.telegram_bot_for_animal_shelter.service.InfoService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class InfoServiceImpl implements InfoService {
 }
