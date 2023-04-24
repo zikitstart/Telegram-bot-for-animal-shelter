@@ -2,6 +2,8 @@
 DROP TABLE IF EXISTS pet;
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS shelter;
+DROP TABLE IF EXISTS info;
+DROP TABLE IF EXISTS volunteer;
 
 -- changeset DeafMist:1
 CREATE TABLE pet
@@ -36,6 +38,23 @@ CREATE TABLE shelter
     contacts VARCHAR(255)
     );
 
+-- changeset jokeproofee:1
+CREATE TABLE info
+(
+    id               BIGSERIAL PRIMARY KEY,
+    recommendations  VARCHAR(255),
+    instructions     VARCHAR(255)
+);
+
+CREATE TABLE volunteer
+(
+    chat_id          BIGSERIAL PRIMARY KEY,
+    surname          VARCHAR(25),
+    first_name       VARCHAR(25),
+    last_name        VARCHAR(25),
+    phone_number     VARCHAR(25)
+);
+
 INSERT INTO pet
-    (name, pet_type)
+(name, pet_type)
 VALUES ('Васька','CAT');
