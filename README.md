@@ -13,9 +13,9 @@
 ---
 
 ## Команда разработчиков:
-* [Завьялов Дмитрий]('https://github.com/Jokeproofee')
-* [Осипов Андрей]('https://github.com/zikitstart')
-* [Проценко Роман]('https://github.com/DeafMist')
+* [Завьялов Дмитрий](https://github.com/Jokeproofee)
+* [Осипов Андрей](https://github.com/zikitstart)
+* [Проценко Роман](https://github.com/DeafMist)
 
 ---
 
