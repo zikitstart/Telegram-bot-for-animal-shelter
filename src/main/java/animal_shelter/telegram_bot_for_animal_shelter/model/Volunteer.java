@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 // Класс для описания волонтера
 @Entity
@@ -20,7 +19,7 @@ public class Volunteer {
     @Column(name = "chat_id")
     private Long chatId;
 
-    @Column(name = "surname")
+    @Column(name = "surname", nullable = false)
     private String surname;
 
     @Column(name = "first_name")
@@ -29,6 +28,9 @@ public class Volunteer {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
+
+    @ManyToMany(mappedBy = "volunteerIds")
+    private Set<Shelter> shelterIds = new HashSet<>();
 }

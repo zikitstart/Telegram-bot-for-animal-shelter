@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "report_id")
+    private Long reportId;
 
     @Column(name = "pet_report")
     private String petReport;
@@ -24,10 +25,10 @@ public class Report {
     @Column(name = "photo")
     private byte[] photo;
 
-    @Column(name = "date_of_report")
+    @Column(name = "date_of_report", nullable = false)
     private LocalDateTime dateOfReport;
 
     @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @JoinColumn(name = "pet_id", nullable = false)
+    private Pet petId;
 }

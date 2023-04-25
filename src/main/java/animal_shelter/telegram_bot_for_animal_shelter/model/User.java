@@ -17,7 +17,7 @@ public class User {
     @Column(name = "chat_id")
     private Long chatId;
 
-    @Column(name = "surname")
+    @Column(name = "surname", nullable = false)
     private String surname;
 
     @Column(name = "first_name")
@@ -26,6 +26,6 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 }
