@@ -29,3 +29,4 @@
 * Lombok
 * Hibernate
 * Liquibase
+* PostgreSQL
