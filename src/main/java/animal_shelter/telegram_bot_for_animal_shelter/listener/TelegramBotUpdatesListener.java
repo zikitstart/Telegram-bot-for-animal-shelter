@@ -1,5 +1,6 @@
 package animal_shelter.telegram_bot_for_animal_shelter.listener;
 
+import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardMenu;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
@@ -14,11 +15,11 @@ import java.util.List;
 @Slf4j
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
-    private final TelegramBot telegramBot;
+    private final KeyboardMenu keyboardMenu;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
-        this.telegramBot.setUpdatesListener(this);
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardMenu keyboardMenu) {
+        this.keyboardMenu = keyboardMenu;
+        telegramBot.setUpdatesListener(this);
     }
 
     @Override
@@ -31,47 +32,32 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private void handleUpdate(Update update){
         //Без обёртки периодически выбрасывает NPE.
         try {
-            handleHello(update);
-            handleCatShelter(update);
-            handleDogShelter(update);
+            if (update.message().text().equals("/start")){
+                keyboardMenu.handleHello(update);
+            }
+            if (update.message().text().equals("/cat")){
+                keyboardMenu.handleCatShelter(update);
+            }
+            if (update.message().text().equals("/dog")){
+                keyboardMenu.handleDogShelter(update);
+            }
+            if (update.message().text().equals("/info")){
+                keyboardMenu.handleInfoShelter(update);
+            }
+            if (update.message().text().equals("/take_cat")){
+                keyboardMenu.handleTakeCatShelter(update);
+            }
+            if (update.message().text().equals("/take_dog")){
+                keyboardMenu.handleTakeDogShelter(update);
+            }
+            if (update.message().text().equals("/report")){
+                keyboardMenu.handleReportShelter(update);
+            }
+            if (update.message().text().equals("/volunteer")){
+                keyboardMenu.handleVolunteerShelter(update);
+            }
         }catch (NullPointerException e){
             e.getMessage();
         }
     }
-    //Приветственное сообщение. Обработка /start.
-    private void handleHello(Update update){
-        if (update.message()!=null && update.message().text().startsWith("/start")){
-            this.telegramBot.execute(
-                    new SendMessage(update.message().chat().id(),
-                            "Приветствую пользователь, это телеграмм-бот для приюта домашних животных."));
-            buttonsCatAndDog(update);
-        }
-    }
-    //Кнопки выбора приюта.
-    private void buttonsCatAndDog(Update update) {
-        InlineKeyboardButton cat = new InlineKeyboardButton("Приют для кошек").callbackData("/cat");
-        InlineKeyboardButton dog = new InlineKeyboardButton("Приют для собак").callbackData("/dog");
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(cat,dog);
-        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Пожалуйста выбери приют:").replyMarkup(keyboard));
-    }
-    //Ответное сообщение на кнопку "Приют для кошек".
-    private void handleCatShelter(Update update){
-        if (update.callbackQuery().data().startsWith("/cat")){
-            this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),"Вы выбрали приют для кошек."));
-        }
-    }
-    //Ответное сообщение на кнопку "Приют для собак".
-    private void handleDogShelter(Update update){
-        if (update.callbackQuery().data().startsWith("/dog")){
-            this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),"Вы выбрали приют для собак."));
-        }
-    }
-    /*private void userRequestProcessingButtons(Update update) {
-        InlineKeyboardButton informationShelter = new InlineKeyboardButton("Узнать информацию о приюте").callbackData("/info");
-        InlineKeyboardButton takeAnimal = new InlineKeyboardButton("Как взять животное из приюта").callbackData("/take");
-        InlineKeyboardButton petReport = new InlineKeyboardButton("Прислать отчет о питомце").callbackData("/report");
-        InlineKeyboardButton callVolunteer = new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer");
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(informationShelter,takeAnimal,petReport,callVolunteer);
-        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Выберите пункт меню:").replyMarkup(keyboard));
-    }*/
 }
