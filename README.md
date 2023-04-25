@@ -8,7 +8,7 @@
 ---
 
 ## Ссылка на полное техническое задание:
-* ТЗ: 'https://skyengpublic.notion.site/47bcac1b049f4af6b351e2ab5d05afb4'
+* [ТЗ](https://skyengpublic.notion.site/47bcac1b049f4af6b351e2ab5d05afb4)
 
 ---
 
