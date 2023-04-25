@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
     //Найти отчёт по petId от начала до окончания испытательного срока
-    Report findReportByPetId(Long petId, LocalDateTime startTime, LocalDateTime finishTime);
+    Report findReportByPetId(Long petId);
 }

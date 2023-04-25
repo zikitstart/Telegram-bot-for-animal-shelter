@@ -5,26 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 // Класс для пользователей, которые взяли животное из приюта
 @Entity
-@Table(name = "user_context")
+@Table(name = "user_details")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserContext {
+public class UserDetails {
     @Id
     @Column(name = "chat_id")
     private Long chatId;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany
-    @JoinTable(name = "pets",
-            joinColumns = @JoinColumn(name = "user_context_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id"))
-    private Set<Pet> pets;
+    @OneToMany(mappedBy = "petId")
+    private List<Pet> petIds;
 }

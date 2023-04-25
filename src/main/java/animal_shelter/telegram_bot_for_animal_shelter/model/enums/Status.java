@@ -1,5 +1,5 @@
 package animal_shelter.telegram_bot_for_animal_shelter.model.enums;
 
-public enum PetType {
-    CAT, DOG
+public enum Status {
+    FREE, TRIAL, EXTRA_14, EXTRA_30
 }

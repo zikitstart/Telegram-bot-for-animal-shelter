@@ -17,12 +17,13 @@ import java.util.Set;
 public class Shelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "shelter_id")
+    private Long shelterId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     private String address;
 
     @Column(name = "driving_directions")
@@ -37,12 +38,14 @@ public class Shelter {
     @Column(name = "rules")
     private String rules;
 
-    @Column(name = "contacts")
+    @Column(name = "contacts", nullable = false)
     private String contacts;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "volunteers",
-            joinColumns = @JoinColumn(name = "shelter_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "volunteer_id", referencedColumnName = "id"))
-    private Set<Volunteer> volunteers = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "shelter_volunteers",
+            joinColumns = @JoinColumn(name = "shelter_id"),
+            inverseJoinColumns = @JoinColumn(name = "volunteer_id")
+    )
+    private Set<Volunteer> volunteerIds = new HashSet<>();
 }
