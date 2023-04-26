@@ -7,9 +7,6 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class KeyboardMenu {
@@ -32,72 +29,90 @@ public class KeyboardMenu {
     //Необходимо сделать вертикальное меню. В горизонт больше 8 кнопок нельзя.
     //Возможно разделение метода на кошек и собак.
     private void userRequestProcessingButtons(Update update) {
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        InlineKeyboardButton informationShelter = new InlineKeyboardButton("Узнать информацию о приюте").callbackData("/info");
-        InlineKeyboardButton takeAnimal = new InlineKeyboardButton("Как взять животное из приюта").callbackData("/take");
-        InlineKeyboardButton petReport = new InlineKeyboardButton("Прислать отчет о питомце").callbackData("/report");
-        InlineKeyboardButton callVolunteer = new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer");
-        keyboard.addRow(informationShelter,takeAnimal,petReport,callVolunteer);
-        //Попытка реализации вертикального меню.
-//        List<InlineKeyboardButton> inlineKeyboardButtons1 = new ArrayList<>();
-//        List<InlineKeyboardButton> inlineKeyboardButtons2 = new ArrayList<>();
-//        inlineKeyboardButtons1.add(informationShelter);
-//        inlineKeyboardButtons1.add(takeAnimal);
-//        inlineKeyboardButtons2.add(petReport);
-//        inlineKeyboardButtons2.add(callVolunteer);
-//        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-//        rowList.add(inlineKeyboardButtons1);
-//        rowList.add(inlineKeyboardButtons2);
-//        keyboard.inlineKeyboard();
-        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Выберите пункт меню:").replyMarkup(keyboard));
-    }
 
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Узнать информацию о приюте").callbackData("/info"),
+                        new InlineKeyboardButton("Как взять животное из приюта").callbackData("/take")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Прислать отчет о питомце").callbackData("/report"),
+                        new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer")
+                });
+        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
+
+    }
     //Кнопки информации о приюте
     //Необходимо сделать вертикальное меню. В горизонт больше 8 кнопок нельзя.
     private void userInfoButtons(Update update){
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        InlineKeyboardButton infoVisiting = new InlineKeyboardButton("Инфо для посещения").callbackData("/info_visiting");
-        InlineKeyboardButton registrationPass = new InlineKeyboardButton("Оформление пропуска").callbackData("/registration_pass");
-        InlineKeyboardButton safetyPrecautions = new InlineKeyboardButton("Техника безопасности").callbackData("/safety_precautions");
-        InlineKeyboardButton callVolunteer = new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer");
-        keyboard.addRow(infoVisiting,registrationPass,safetyPrecautions,callVolunteer);
-        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Для детальной информации выберите пункт меню:").replyMarkup(keyboard));
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Инфо для посещения").callbackData("/info_visiting"),
+                        new InlineKeyboardButton("Оформление пропуска").callbackData("/registration_pass")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Техника безопасности").callbackData("/safety_precautions"),
+                        new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer")
+                });
+        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Для детальной информации выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
     //Кнопки как взять кота из приюта.
     //Необходимо сделать вертикальное меню. В горизонт больше 8 кнопок нельзя.
     private void userTakeCatButtons(Update update){
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        InlineKeyboardButton datingRules = new InlineKeyboardButton("Правила знакомства с животным").callbackData("/dating_rules");
-        InlineKeyboardButton listDocuments = new InlineKeyboardButton("Список документов").callbackData("/list_documents");
-        InlineKeyboardButton transportingCat = new InlineKeyboardButton("Рекомендации по транспортировке кота").callbackData("/transporting_cat");
-        InlineKeyboardButton recommendationsKitten = new InlineKeyboardButton("Рекомендации для котенка").callbackData("/recommendations_kitten");
-        InlineKeyboardButton adultCat = new InlineKeyboardButton("Рекомендации для взрослого кота").callbackData("/adult_cat");
-        InlineKeyboardButton catWithDisabilities = new InlineKeyboardButton("Рекомендации для кота с ограниченными возможностями").callbackData("/cat_with_disabilities");
-        InlineKeyboardButton reasonsRefusal = new InlineKeyboardButton("Причины отказа").callbackData("/reasons_refusal");
-        InlineKeyboardButton contactDetails = new InlineKeyboardButton("Контактные данные").callbackData("/contact_details");
-        InlineKeyboardButton callVolunteer = new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer");
-        keyboard.addRow(datingRules,listDocuments,transportingCat,recommendationsKitten,adultCat,catWithDisabilities,reasonsRefusal,contactDetails,callVolunteer);
-        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Выберите пункт меню:").replyMarkup(keyboard));
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Правила знакомства с животным").callbackData("/dating_rules"),
+                        new InlineKeyboardButton("Список документов").callbackData("/list_documents")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Рекомендации по транспортировке кота").callbackData("/transporting_cat"),
+                        new InlineKeyboardButton("Рекомендации для котенка").callbackData("/recommendations_kitten")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Рекомендации для взрослого кота").callbackData("/adult_cat"),
+                        new InlineKeyboardButton("Рекомендации для кота с ограниченными возможностями").callbackData("/cat_with_disabilities")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Причины отказа").callbackData("/reasons_refusal"),
+                        new InlineKeyboardButton("Контактные данные").callbackData("/contact_details")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer")
+                });
+        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
     //Кнопки как взять собаку из приюта.
     //Необходимо сделать вертикальное меню. В горизонт больше 8 кнопок нельзя.
     private void userTakeDogButtons(Update update){
-        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        InlineKeyboardButton datingRules = new InlineKeyboardButton("Правила знакомства с животным").callbackData("/dating_rules");
-        InlineKeyboardButton listDocuments = new InlineKeyboardButton("Список документов").callbackData("/list_documents");
-        InlineKeyboardButton transportingDog = new InlineKeyboardButton("Рекомендации по транспортировке собаки").callbackData("/transporting_dog");
-        InlineKeyboardButton recommendationsPuppy = new InlineKeyboardButton("Рекомендации для щенка").callbackData("/recommendations_puppy");
-        InlineKeyboardButton adultDog = new InlineKeyboardButton("Рекомендации для взрослой собаки").callbackData("/adult_dog");
-        InlineKeyboardButton dogWithDisabilities = new InlineKeyboardButton("Рекомендации для собаки с ограниченными возможностями").callbackData("/dog_with_disabilities");
-        InlineKeyboardButton tipsDogHandler = new InlineKeyboardButton("Советы кинолога").callbackData("/tips_dog_handler");
-        InlineKeyboardButton recommendationsDogHandler = new InlineKeyboardButton("Рекомендации по проверенным кинологам").callbackData("/recommendations_dog_handler");
-        InlineKeyboardButton reasonsRefusal = new InlineKeyboardButton("Причины отказа").callbackData("/reasons_refusal");
-        InlineKeyboardButton contactDetails = new InlineKeyboardButton("Контактные данные").callbackData("/contact_details");
-        InlineKeyboardButton callVolunteer = new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer");
-        keyboard.addRow(datingRules,listDocuments,transportingDog,recommendationsPuppy,adultDog,dogWithDisabilities,tipsDogHandler,recommendationsDogHandler,reasonsRefusal,contactDetails,callVolunteer);
-        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Выберите пункт меню:").replyMarkup(keyboard));
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Правила знакомства с животным").callbackData("/dating_rules"),
+                        new InlineKeyboardButton("Список документов").callbackData("/list_documents")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Рекомендации по транспортировке собаки").callbackData("/transporting_dog"),
+                        new InlineKeyboardButton("Рекомендации для щенка").callbackData("/recommendations_puppy")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Рекомендации для взрослой собаки").callbackData("/adult_dog"),
+                        new InlineKeyboardButton("Рекомендации для собаки с ограниченными возможностями").callbackData("/dog_with_disabilities")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Советы кинолога").callbackData("/tips_dog_handler"),
+                        new InlineKeyboardButton("Рекомендации по проверенным кинологам").callbackData("/recommendations_dog_handler")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Причины отказа").callbackData("/reasons_refusal"),
+                        new InlineKeyboardButton("Контактные данные").callbackData("/contact_details")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteer")
+                });
+        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
     //Приветственное сообщение. Обработка /start.
