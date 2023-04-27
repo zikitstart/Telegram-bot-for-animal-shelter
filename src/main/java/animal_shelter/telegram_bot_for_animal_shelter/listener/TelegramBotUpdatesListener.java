@@ -15,6 +15,7 @@ import java.util.List;
 
 @Component
 @Slf4j
+//Обработка сообщений
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
@@ -34,28 +35,51 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         return CONFIRMED_UPDATES_ALL;
     }
 
-    //Обработчик.
+    //Стартовое приветствие (Общий метод на два приюта)
+    public void startMenu (Update update) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
+                new InlineKeyboardButton("Усыновить питомца").callbackData("/selectShelter"));
+        this.telegramBot.execute(new SendMessage(update.message().chat().id(),"Привет я бот-помошник!!!\n\nЕсли у тебя есть какие-то вопросы или желание усыновить питомца\n\nЖми кнопку!!!").replyMarkup(inlineKeyboardMarkup));
+    }
+
+    //Выбор приюта (Общий метод на два приюта)
+    public void selectShelterMenu (Update update) {
+        InlineKeyboardButton cat = new InlineKeyboardButton("Приют для кошек").callbackData("/cat");
+        InlineKeyboardButton dog = new InlineKeyboardButton("Приют для собак").callbackData("/dog");
+        InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(cat,dog);
+        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
+                "Приветствую пользователь, это телеграмм-бот для приюта домашних животных.\n\n Пожалуйста выбери приют:").replyMarkup(keyboard));
+    }
+
+    //Обработчик
     private void handleUpdate(Update update){
-        //Без обёртки периодически выбрасывает NPE.
         try {
             if (update.message() != null && update.message().text().startsWith("/start")){
-                InlineKeyboardButton cat = new InlineKeyboardButton("Приют для кошек").callbackData("/cat");
-                InlineKeyboardButton dog = new InlineKeyboardButton("Приют для собак").callbackData("/dog");
-                InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(cat,dog);
-                this.telegramBot.execute(new SendMessage(update.message().chat().id(),
-                        "Приветствую пользователь, это телеграмм-бот для приюта домашних животных.\n\n Пожалуйста выбери приют:").replyMarkup(keyboard));
+                startMenu(update);
+                return;
+            }
+            if (update.callbackQuery().data().startsWith("/selectShelter")){
+                selectShelterMenu(update);
                 return;
             }
             if (update.callbackQuery().data().startsWith("/cat")){
-                keyboardCat.handleCatShelter(update);
+                keyboardCat.menuButtonsCatShelter(update);
                 return;
             }
             if (update.callbackQuery().data().startsWith("/infoCat")){
-                keyboardCat.userInfoCatButtons(update);
+                keyboardCat.menuButtonsInfoCatShelter(update);
                 return;
             }
             if (update.callbackQuery().data().startsWith("/takeCat")){
-                keyboardCat.userTakeCatButtons(update);
+                keyboardCat.menuButtonsTakeCatShelter(update);
+                return;
+            }
+            if (update.callbackQuery().data().startsWith("/reportCat")){
+                keyboardCat.menuButtonsReportCatShelter(update);
+                return;
+            }
+            if (update.callbackQuery().data().startsWith("/detailedInfoCat")){
+                keyboardCat.handleDetailedInfoCatShelter(update);
                 return;
             }
             if (update.callbackQuery().data().startsWith("/visitingCat")){
@@ -96,10 +120,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
             if (update.callbackQuery().data().startsWith("/reasonsRefusalCat")){
                 keyboardCat.handleReasonsRefusalCatShelter(update);
-                return;
-            }
-            if (update.callbackQuery().data().startsWith("/reportCat")){
-                keyboardCat.handleReportCatShelter(update);
                 return;
             }
             if (update.callbackQuery().data().startsWith("/volunteerCat")){
