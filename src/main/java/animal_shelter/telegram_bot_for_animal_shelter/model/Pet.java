@@ -36,6 +36,6 @@ public class Pet {
     @JoinColumn(name = "shelter_id", nullable = false)
     private Shelter shelterId;
 
-    @Column(name = "pet_status")
+    @Column(name = "pet_status", nullable = false)
     private String petStatus;
 }
