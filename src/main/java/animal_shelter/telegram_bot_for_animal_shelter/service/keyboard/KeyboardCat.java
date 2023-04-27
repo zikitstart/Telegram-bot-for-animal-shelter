@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
 @Service
+//Клавиатуры/Меню для приюта кошек
 public class KeyboardCat {
 
     private final TelegramBot telegramBot;
@@ -16,10 +17,8 @@ public class KeyboardCat {
         this.telegramBot = telegramBot;
     }
 
-    //Кнопки стартового меню приюта.
-    //Необходимо сделать вертикальное меню. В горизонт больше 8 кнопок нельзя.
-    //Возможно разделение метода на кошек и собак.
-    public void handleCatShelter(Update update) {
+    //Кнопки меню после "Выбор приюта"
+    public void menuButtonsCatShelter(Update update) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{
@@ -29,29 +28,36 @@ public class KeyboardCat {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Прислать отчет о питомце").callbackData("/reportCat"),
                         new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteerCat")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Возврат к выбору приюта").callbackData("/selectShelter")
                 });
-        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),"Вы выбрали приют для кошек 'Островок надежды'\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
+        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Вас приветствует приют для кошек 'Островок надежды'\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
-    //Кнопки информации о приюте
-    //Необходимо сделать вертикальное меню. В горизонт больше 8 кнопок нельзя.
-    public void userInfoCatButtons(Update update){
+    //Кнопки меню "Информация о приюте"
+    public void menuButtonsInfoCatShelter(Update update) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Инфо для посещения").callbackData("/visitingCat"),
-                        new InlineKeyboardButton("Оформление пропуска").callbackData("/registrationPassCat")
+                        new InlineKeyboardButton("Детальная информация о приюте").callbackData("/detailedInfoCat"),
+                        new InlineKeyboardButton("Информация для посещения").callbackData("/visitingCat")
                 },
                 new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Оформление пропуска").callbackData("/registrationPassCat"),
                         new InlineKeyboardButton("Техника безопасности").callbackData("/safetyPrecautionsCat"),
-                        new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteerCat")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Позвать волонтера").callbackData("/volunteerCat")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Возврат к предыдущему меню").callbackData("/cat")
                 });
-        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),"Для детальной информации выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
+        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Для детальной информации выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
-    //Кнопки как взять кота из приюта.
-    //Необходимо сделать вертикальное меню. В горизонт больше 8 кнопок нельзя.
-    public void userTakeCatButtons(Update update){
+    //Кнопки меню "Как взять кота из приюта"
+    public void menuButtonsTakeCatShelter(Update update) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{
@@ -72,70 +78,110 @@ public class KeyboardCat {
                 },
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteerCat")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Возврат к предыдущему меню").callbackData("/cat")
                 });
-        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),"Инструкция по усыновлению кота.\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
+        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Инструкция по усыновлению кота.\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
-    public void handleReasonsRefusalCatShelter(Update update){
+
+    //Кнопки меню "Отчёт о питомце"
+    public void menuButtonsReportCatShelter(Update update) {
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Фото животного").callbackData("/photoCat"),
+                        new InlineKeyboardButton("Рацион животного").callbackData("/dietCat")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Самочувствие и привыкание к новому месту").callbackData("/addictiveCat"),
+                        new InlineKeyboardButton("Изменение в поведении").callbackData("/changesCat")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Возврат в предыдущее меню").callbackData("/cat")
+                });
+        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Заполните отчёт о питомце:").replyMarkup(inlineKeyboardMarkup));
+    }
+
+    //Причины отказа для взятия животного из приюта
+    public void handleReasonsRefusalCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "1. Нет возможности содержать животное.\n2. Нет документов подтверждающих личность.\n3. Зафиксированные случаи плохого обращения с животными."));
     }
-    public void handleWithDisabilitiesCatShelter(Update update){
+
+    //Рекомендации для усыновления кота с ограниченными возможностями
+    public void handleWithDisabilitiesCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "1. Обустроить свой дом для комфортного проживания кота с ограниченными возможностями.\n2. Купить специальный корм.\n3. Сделать для него личное место."));
     }
-    public void handleAdultCatShelter(Update update){
+
+    //Рекомендации для усыновления кота
+    public void handleAdultCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "1. Купите всё, что вам будет необходимо для кота (Миску,Корм,Клетку-переноску)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
     }
-    public void handleRecommendationsKittenShelter(Update update){
+
+    //Рекомендации для усыновления котёнка
+    public void handleRecommendationsKittenShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "1. Купите всё, что вам будет необходимо для котёнка (Миску,Корм,Адресник,Клетку-переноску)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
     }
-    public void handleTransportingCatShelter(Update update){
+
+    //Рекомендации по транспортировке кота
+    public void handleTransportingCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "1. Взять клетку-переноску.\n2. Взять одеяло.\n3. Приехать на автомобиле или вызвать такси/спецтранспорт для транспортировки."));
     }
-    public void handleListDocumentsCatShelter(Update update){
+
+    //Документы которые нужно иметь при себе,необходимые для усыновления кота
+    public void handleListDocumentsCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "Для усыновления котёнка/кота вам нужно иметь при себе:\n1. Паспорт"));
     }
-    public void handleDatingRulesCatShelter(Update update){
+
+    //Правила знакомства с животным(котом)
+    public void handleDatingRulesCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "1.Изучите породы котов.\n2. Подберите животное, подходящее вашему уровню активности.\n3. Учитывайте свои условия проживания.\n4. Определитесь со своими требованиями.\n5. Подумайте, стоит ли брать кота с особыми потребностями."));
     }
-    public void handleSafetyPrecautionsCatShelter(Update update){
+
+    //Техника безопасности на територии приюта
+    public void handleSafetyPrecautionsCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "При посещении данного заведения,запрещено кормить животных,общаться с ними без контроля волонтёра,курить,употреблять алкоголь и пищу."));
     }
 
-    public void handleRegistrationPassCatShelter(Update update){
+    //Контактные данные пункта охраны для оформления пропуска на автомобиль
+    public void handleRegistrationPassCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "Для того чтобы выписать пропуск на автомобиль,свяжитесь с пунктом охраны по данному телефону:  '344-17-43'"));
     }
-    public void handleVisitingCatShelter(Update update){
+
+    //Информация для посещения(Время работы,Адрес,Телефон)
+    public void handleVisitingCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "Часы работы: 9:00-20:00\nАдрес: просп. Большой Смоленский, д. 9.\nТелефон: 374-15-15"));
     }
 
-    //Ответное сообщение на кнопку "/report".
-    public void handleReportCatShelter(Update update){
+    //Детальная информация о приюте
+    public void handleDetailedInfoCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
-                        "Вы выбрали отчёт."));
-        //Здесь будет метод с кнопками по отчёту.
+                        "Дома, где вам всегда рады, и где так сильно требуется ваша помощь. Если вы хотите взять или отдать животное, обращайтесь по номерам телефонов приютов."));
     }
-    //Ответное сообщение на кнопку "/volunteer".
-    public void handleVolunteerCatShelter(Update update){
+
+    //Сообщение при нажатии на кнопку "Позвать волонтёра" (команда "/volunteer")
+    public void handleVolunteerCatShelter(Update update) {
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(),
                         "Ожидайте первый освободившийся волонтёр свяжется с вами."));
