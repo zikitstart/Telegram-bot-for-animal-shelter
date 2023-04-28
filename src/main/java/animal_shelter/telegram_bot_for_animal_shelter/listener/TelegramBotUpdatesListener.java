@@ -59,146 +59,41 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 return;
             }
             switch (update.callbackQuery().data()) {
-                case "/selectShelter":
-                    if (update.callbackQuery().data().startsWith("/selectShelter")) {
-                        selectShelterMenu(update);
-                    }
-                case "/cat":
-                    if (update.callbackQuery().data().startsWith("/cat")) {
-                        keyboardCat.menuButtonsCatShelter(update);
-                    }
-                case "/infoCat":
-                    if (update.callbackQuery().data().startsWith("/infoCat")) {
-                        keyboardCat.menuButtonsInfoCatShelter(update);
-                    }
-                case "/takeCat":
-                    if (update.callbackQuery().data().startsWith("/takeCat")) {
-                        keyboardCat.menuButtonsTakeCatShelter(update);
-                    }
-                case "/reportCat":
-                    if (update.callbackQuery().data().startsWith("/reportCat")) {
-                        keyboardCat.menuButtonsReportCatShelter(update);
-                    }
-                case "/detailedInfoCat":
-                    if (update.callbackQuery().data().startsWith("/detailedInfoCat")) {
-                        keyboardCat.handleDetailedInfoCatShelter(update);
-                    }
-                case "/visitingCat":
-                    if (update.callbackQuery().data().startsWith("/visitingCat")) {
-                        keyboardCat.handleVisitingCatShelter(update);
-                    }
-                case "/registrationPassCat":
-                    if (update.callbackQuery().data().startsWith("/registrationPassCat")) {
-                        keyboardCat.handleRegistrationPassCatShelter(update);
-                    }
-                case "/safetyPrecautionsCat":
-                    if (update.callbackQuery().data().startsWith("/safetyPrecautionsCat")) {
-                        keyboardCat.handleSafetyPrecautionsCatShelter(update);
-                    }
-                case "/datingRulesCat":
-                    if (update.callbackQuery().data().startsWith("/datingRulesCat")) {
-                        keyboardCat.handleDatingRulesCatShelter(update);
-                    }
-                case "/listDocumentsCat":
-                    if (update.callbackQuery().data().startsWith("/listDocumentsCat")) {
-                        keyboardCat.handleListDocumentsCatShelter(update);
-                    }
-                case "/transportingCat":
-                    if (update.callbackQuery().data().startsWith("/transportingCat")) {
-                        keyboardCat.handleTransportingCatShelter(update);
-                    }
-                case "/recommendationsKitten":
-                    if (update.callbackQuery().data().startsWith("/recommendationsKitten")) {
-                        keyboardCat.handleRecommendationsKittenShelter(update);
-                    }
-                case "/adultCat":
-                    if (update.callbackQuery().data().startsWith("/adultCat")) {
-                        keyboardCat.handleAdultCatShelter(update);
-                    }
-                case "/withDisabilitiesCat":
-                    if (update.callbackQuery().data().startsWith("/withDisabilitiesCat")) {
-                        keyboardCat.handleWithDisabilitiesCatShelter(update);
-                    }
-                case "/reasonsRefusalCat":
-                    if (update.callbackQuery().data().startsWith("/reasonsRefusalCat")) {
-                        keyboardCat.handleReasonsRefusalCatShelter(update);
-                    }
-                case "/volunteerCat":
-                    if (update.callbackQuery().data().startsWith("/volunteerCat")) {
-                        keyboardCat.handleVolunteerCatShelter(update);
-                    }
-                case "/dog":
-                    if (update.callbackQuery().data().startsWith("/dog")) {
-                        keyboardDog.menuButtonsDogShelter(update);
-                    }
-                case "/infoDog":
-                    if (update.callbackQuery().data().startsWith("/infoDog")) {
-                        keyboardDog.menuButtonsInfoDogShelter(update);
-                    }
-                case "/takeDog":
-                    if (update.callbackQuery().data().startsWith("/takeDog")) {
-                        keyboardDog.menuButtonsTakeDogShelter(update);
-                    }
-                case "/reportDog":
-                    if (update.callbackQuery().data().startsWith("/reportDog")) {
-                        keyboardDog.menuButtonsReportDogShelter(update);
-                    }
-                case "/detailedInfoDog":
-                    if (update.callbackQuery().data().startsWith("/detailedInfoDog")) {
-                        keyboardDog.handleDetailedInfoDogShelter(update);
-                    }
-                case "/visitingDog":
-                    if (update.callbackQuery().data().startsWith("/visitingDog")) {
-                        keyboardDog.handleVisitingDogShelter(update);
-                    }
-                case "/registrationPassDog":
-                    if (update.callbackQuery().data().startsWith("/registrationPassDog")) {
-                        keyboardDog.handleRegistrationPassDogShelter(update);
-                    }
-                case "/safetyPrecautionsDog":
-                    if (update.callbackQuery().data().startsWith("/safetyPrecautionsDog")) {
-                        keyboardDog.handleSafetyPrecautionsDogShelter(update);
-                    }
-                case "/datingRulesDog":
-                    if (update.callbackQuery().data().startsWith("/datingRulesDog")) {
-                        keyboardDog.handleDatingRulesDogShelter(update);
-                    }
-                case "/listDocumentsDog":
-                    if (update.callbackQuery().data().startsWith("/listDocumentsDog")) {
-                        keyboardDog.handleListDocumentsDogShelter(update);
-                    }
-                case "/transportingDog":
-                    if (update.callbackQuery().data().startsWith("/transportingDog")) {
-                        keyboardDog.handleTransportingDogShelter(update);
-                    }
-                case "/recommendationsPuppy":
-                    if (update.callbackQuery().data().startsWith("/recommendationsPuppy")) {
-                        keyboardDog.handleRecommendationsPuppyShelter(update);
-                    }
-                case "/adultDog":
-                    if (update.callbackQuery().data().startsWith("/adultDog")) {
-                        keyboardDog.handleAdultDogShelter(update);
-                    }
-                case "/withDisabilitiesDog":
-                    if (update.callbackQuery().data().startsWith("/withDisabilitiesDog")) {
-                        keyboardDog.handleWithDisabilitiesDogShelter(update);
-                    }
-                case "/reasonsRefusalDog":
-                    if (update.callbackQuery().data().startsWith("/reasonsRefusalDog")) {
-                        keyboardDog.handleReasonsRefusalDogShelter(update);
-                    }
-                case "/tipsHandlerDog":
-                    if (update.callbackQuery().data().startsWith("/tipsHandlerDog")) {
-                        keyboardDog.handleTipsHandlerDogShelter(update);
-                    }
-                case "/recommendationsHandlerDog":
-                    if (update.callbackQuery().data().startsWith("/recommendationsHandlerDog")) {
-                        keyboardDog.handleRecommendationsHandlerDogShelter(update);
-                    }
-                case "/volunteerDog":
-                    if (update.callbackQuery().data().startsWith("/volunteerDog")) {
-                        keyboardDog.handleVolunteerDogShelter(update);
-                    }
+                case "/selectShelter" -> selectShelterMenu(update);
+                case "/cat" -> keyboardCat.menuButtonsCatShelter(update);
+                case "/infoCat" -> keyboardCat.menuButtonsInfoCatShelter(update);
+                case "/takeCat" -> keyboardCat.menuButtonsTakeCatShelter(update);
+                case "/reportCat" -> keyboardCat.menuButtonsReportCatShelter(update);
+                case "/detailedInfoCat" -> keyboardCat.handleDetailedInfoCatShelter(update);
+                case "/visitingCat" -> keyboardCat.handleVisitingCatShelter(update);
+                case "/registrationPassCat" -> keyboardCat.handleRegistrationPassCatShelter(update);
+                case "/safetyPrecautionsCat" -> keyboardCat.handleSafetyPrecautionsCatShelter(update);
+                case "/datingRulesCat" -> keyboardCat.handleDatingRulesCatShelter(update);
+                case "/listDocumentsCat" -> keyboardCat.handleListDocumentsCatShelter(update);
+                case "/transportingCat" -> keyboardCat.handleTransportingCatShelter(update);
+                case "/recommendationsKitten" -> keyboardCat.handleRecommendationsKittenShelter(update);
+                case "/adultCat" -> keyboardCat.handleAdultCatShelter(update);
+                case "/withDisabilitiesCat" -> keyboardCat.handleWithDisabilitiesCatShelter(update);
+                case "/reasonsRefusalCat" -> keyboardCat.handleReasonsRefusalCatShelter(update);
+                case "/volunteerCat" -> keyboardCat.handleVolunteerCatShelter(update);
+                case "/dog" -> keyboardDog.menuButtonsDogShelter(update);
+                case "/infoDog" -> keyboardDog.menuButtonsInfoDogShelter(update);
+                case "/takeDog" -> keyboardDog.menuButtonsTakeDogShelter(update);
+                case "/reportDog" -> keyboardDog.menuButtonsReportDogShelter(update);
+                case "/detailedInfoDog" -> keyboardDog.handleDetailedInfoDogShelter(update);
+                case "/visitingDog" -> keyboardDog.handleVisitingDogShelter(update);
+                case "/registrationPassDog" -> keyboardDog.handleRegistrationPassDogShelter(update);
+                case "/safetyPrecautionsDog" -> keyboardDog.handleSafetyPrecautionsDogShelter(update);
+                case "/datingRulesDog" -> keyboardDog.handleDatingRulesDogShelter(update);
+                case "/listDocumentsDog" -> keyboardDog.handleListDocumentsDogShelter(update);
+                case "/transportingDog" -> keyboardDog.handleTransportingDogShelter(update);
+                case "/recommendationsPuppy" -> keyboardDog.handleRecommendationsPuppyShelter(update);
+                case "/adultDog" -> keyboardDog.handleAdultDogShelter(update);
+                case "/withDisabilitiesDog" -> keyboardDog.handleWithDisabilitiesDogShelter(update);
+                case "/reasonsRefusalDog" -> keyboardDog.handleReasonsRefusalDogShelter(update);
+                case "/tipsHandlerDog" -> keyboardDog.handleTipsHandlerDogShelter(update);
+                case "/recommendationsHandlerDog" -> keyboardDog.handleRecommendationsHandlerDogShelter(update);
+                case "/volunteerDog" -> keyboardDog.handleVolunteerDogShelter(update);
             }
         } catch (NullPointerException e) {
             log.error("Была ошибка NullPointerException" + e.getMessage());
