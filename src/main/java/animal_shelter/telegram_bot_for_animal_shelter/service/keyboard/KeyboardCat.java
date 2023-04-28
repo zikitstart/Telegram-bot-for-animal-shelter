@@ -102,89 +102,16 @@ public class KeyboardCat {
                 });
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Заполните отчёт о питомце:").replyMarkup(inlineKeyboardMarkup));
     }
-
-    //Причины отказа для взятия животного из приюта
-    public void handleReasonsRefusalCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "1. Нет возможности содержать животное.\n2. Нет документов подтверждающих личность.\n3. Зафиксированные случаи плохого обращения с животными."));
-    }
-
-    //Рекомендации для усыновления кота с ограниченными возможностями
-    public void handleWithDisabilitiesCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "1. Обустроить свой дом для комфортного проживания кота с ограниченными возможностями.\n2. Купить специальный корм.\n3. Сделать для него личное место."));
-    }
-
-    //Рекомендации для усыновления кота
-    public void handleAdultCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "1. Купите всё, что вам будет необходимо для кота (Миску,Корм,Клетку-переноску)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
-    }
-
-    //Рекомендации для усыновления котёнка
-    public void handleRecommendationsKittenShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "1. Купите всё, что вам будет необходимо для котёнка (Миску,Корм,Адресник,Клетку-переноску)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
-    }
-
-    //Рекомендации по транспортировке кота
-    public void handleTransportingCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "1. Взять клетку-переноску.\n2. Взять одеяло.\n3. Приехать на автомобиле или вызвать такси/спецтранспорт для транспортировки."));
-    }
-
-    //Документы которые нужно иметь при себе,необходимые для усыновления кота
-    public void handleListDocumentsCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "Для усыновления котёнка/кота вам нужно иметь при себе:\n1. Паспорт"));
-    }
-
-    //Правила знакомства с животным(котом)
-    public void handleDatingRulesCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "1.Изучите породы котов.\n2. Подберите животное, подходящее вашему уровню активности.\n3. Учитывайте свои условия проживания.\n4. Определитесь со своими требованиями.\n5. Подумайте, стоит ли брать кота с особыми потребностями."));
-    }
-
-    //Техника безопасности на територии приюта
-    public void handleSafetyPrecautionsCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "При посещении данного заведения,запрещено кормить животных,общаться с ними без контроля волонтёра,курить,употреблять алкоголь и пищу."));
-    }
-
-    //Контактные данные пункта охраны для оформления пропуска на автомобиль
-    public void handleRegistrationPassCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "Для того чтобы выписать пропуск на автомобиль,свяжитесь с пунктом охраны по данному телефону:  '344-17-43'"));
-    }
-
-    //Информация для посещения(Время работы,Адрес,Телефон)
-    public void handleVisitingCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "Часы работы: 9:00-20:00\nАдрес: просп. Большой Смоленский, д. 9.\nТелефон: 374-15-15"));
-    }
-
-    //Детальная информация о приюте
-    public void handleDetailedInfoCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "Дома, где вам всегда рады, и где так сильно требуется ваша помощь. Если вы хотите взять или отдать животное, обращайтесь по номерам телефонов приютов."));
-    }
-
-    //Сообщение при нажатии на кнопку "Позвать волонтёра" (команда "/volunteer")
-    public void handleVolunteerCatShelter(Update update) {
-        this.telegramBot.execute(
-                new SendMessage(update.callbackQuery().from().id(),
-                        "Ожидайте первый освободившийся волонтёр свяжется с вами."));
-        //Здесь будет метод с волонтёром.
-    }
+    //Доработка отчёта
+//    public void handleDietCatShelter(Update update) {
+//        this.telegramBot.execute(
+//                new SendMessage(update.callbackQuery().from().id(),
+//                        "Впишите текст отчёта о рационе кота:"));
+////        if (update.message().text() != null){
+////            String text = update.message().text();
+////            Long chatId = update.message().chat().id();
+////            Report report = new Report();
+////            report.setPetReport(text);
+////        }
+//    }
 }
