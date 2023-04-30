@@ -1,5 +1,7 @@
 package animal_shelter.telegram_bot_for_animal_shelter.service.keyboard;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.Shelter;
+import animal_shelter.telegram_bot_for_animal_shelter.repository.ShelterRepository;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
@@ -11,9 +13,11 @@ import org.springframework.stereotype.Service;
 //Клавиатуры/Меню для приюта кошек
 public class KeyboardCat {
 
+    private final ShelterRepository shelterRepository;
     private final TelegramBot telegramBot;
 
-    public KeyboardCat(TelegramBot telegramBot) {
+    public KeyboardCat(ShelterRepository shelterRepository, TelegramBot telegramBot) {
+        this.shelterRepository = shelterRepository;
         this.telegramBot = telegramBot;
     }
 
@@ -32,7 +36,7 @@ public class KeyboardCat {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат к выбору приюта").callbackData("/selectShelter")
                 });
-        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Вас приветствует приют для кошек 'Островок надежды'\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
+        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Вас приветствует приют для кошек: "+ (shelterRepository.getSheltersByShelterId(1L).getName()) +"\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
     //Кнопки меню "Информация о приюте"
