@@ -1,5 +1,6 @@
 package animal_shelter.telegram_bot_for_animal_shelter.listener;
 
+import animal_shelter.telegram_bot_for_animal_shelter.repository.InfoRepository;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ShelterRepository;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardDog;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardCat;
@@ -23,12 +24,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final KeyboardCat keyboardCat;
     private final KeyboardDog keyboardDog;
     private final ShelterRepository shelterRepository;
+    private final InfoRepository infoRepository;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ShelterRepository shelterRepository) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ShelterRepository shelterRepository, InfoRepository infoRepository) {
         this.telegramBot = telegramBot;
         this.keyboardCat = keyboardCat;
         this.keyboardDog = keyboardDog;
         this.shelterRepository = shelterRepository;
+        this.infoRepository = infoRepository;
         telegramBot.setUpdatesListener(this);
     }
 
@@ -77,21 +80,21 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case "/registrationPassCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     (shelterRepository.getSheltersByShelterId(1L).getContacts())));
             case "/safetyPrecautionsCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "При посещении данного заведения,запрещено кормить животных,общаться с ними без контроля волонтёра,курить,употреблять алкоголь и пищу."));
+                    (shelterRepository.getSheltersByShelterId(1L).getRules())));
             case "/datingRulesCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1.Изучите породы котов.\n2. Подберите животное, подходящее вашему уровню активности.\n3. Учитывайте свои условия проживания.\n4. Определитесь со своими требованиями.\n5. Подумайте, стоит ли брать кота с особыми потребностями."));
+                    (infoRepository.getInfoByInfoId(1L).getDatingRulesPet())));
             case "/listDocumentsCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Для усыновления котёнка/кота вам нужно иметь при себе:\n1. Паспорт"));
+                    (infoRepository.getInfoByInfoId(1L).getListDocumentsPet())));
             case "/transportingCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Взять клетку-переноску.\n2. Взять одеяло.\n3. Приехать на автомобиле или вызвать такси/спецтранспорт для транспортировки."));
+                    (infoRepository.getInfoByInfoId(1L).getTransportingPet())));
             case "/recommendationsKitten" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Купите всё, что вам будет необходимо для котёнка (Миску,Корм,Адресник,Клетку-переноску)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
+                    (infoRepository.getInfoByInfoId(1L).getRecommendationsLittlePet())));
             case "/adultCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Купите всё, что вам будет необходимо для кота (Миску,Корм,Клетку-переноску)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
+                    (infoRepository.getInfoByInfoId(1L).getRecommendationsAdultPet())));
             case "/withDisabilitiesCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Обустроить свой дом для комфортного проживания кота с ограниченными возможностями.\n2. Купить специальный корм.\n3. Сделать для него личное место."));
+                    (infoRepository.getInfoByInfoId(1L).getRecommendationsWithDisabilitiesPet())));
             case "/reasonsRefusalCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Нет возможности содержать животное.\n2. Нет документов подтверждающих личность.\n3. Зафиксированные случаи плохого обращения с животными."));
+                    (infoRepository.getInfoByInfoId(1L).getReasonsRefusalPet())));
             case "/volunteerCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     "Ожидайте первый освободившийся волонтёр свяжется с вами."));
 
@@ -100,31 +103,31 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case "/takeDog" -> keyboardDog.menuButtonsTakeDogShelter(update);
             case "/reportDog" -> keyboardDog.menuButtonsReportDogShelter(update);
             case "/detailedInfoDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Крупнейшая в Петербурге сеть помощи бездомным животным «Потеряшка» построила собственный приют «Теремок». Здесь принимают в первую очередь больных и травмированных животных, при этом вид бывших домашних питомцев не имеет значения, будь то собака, кролик или попугай. На территории приюта живёт порядка 300 собак."));
+                    (shelterRepository.getSheltersByShelterId(2L).getDescription())));
             case "/visitingDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Часы работы: 9:00-20:00\nАдрес: просп. Большой Смоленский, д. 9.\nТелефон: 651-27-01"));
+                    (shelterRepository.getSheltersByShelterId(2L).getAddress()+"\n"+shelterRepository.getSheltersByShelterId(2L).getSchedule()+"\n"+shelterRepository.getSheltersByShelterId(2L).getDrivingDirections())));
             case "/registrationPassDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Для  того чтобы выписать пропуск на автомобиль,свяжитесь с пунктом охраны по данному телефону:  '344-17-43'"));
+                    (shelterRepository.getSheltersByShelterId(2L).getContacts())));
             case "/safetyPrecautionsDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "При посещении  данного заведения,запрещено кормить животных,общаться с ними без контроля волонтёра,курить,употреблять алкоголь и пищу."));
+                    (shelterRepository.getSheltersByShelterId(2L).getRules())));
             case "/datingRulesDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1.Изучите породы собак.\n2. Подберите животное, подходящее вашему уровню активности.\n3. Учитывайте свои условия проживания.\n4. Определитесь со своими требованиями.\n5. Подумайте, стоит ли брать собаку с особыми потребностями."));
+                    (infoRepository.getInfoByInfoId(2L).getDatingRulesPet())));
             case "/listDocumentsDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Для усыновления щенка/собаки вам нужно иметь при себе:\n1. Паспорт"));
+                    (infoRepository.getInfoByInfoId(2L).getListDocumentsPet())));
             case "/transportingDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Взять ошейник, намордник.\n2. Взять одеяло.\n3. Приехать на автомобиле или вызвать такси/спецтранспорт для транспортировки."));
+                    (infoRepository.getInfoByInfoId(2L).getTransportingPet())));
             case "/recommendationsPuppy" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Купите всё, что вам будет необходимо для щенка (Миску,Корм,Адресник,ошейник)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
+                    (infoRepository.getInfoByInfoId(2L).getRecommendationsLittlePet())));
             case "/adultDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Купите всё, что вам будет необходимо для собаки (Миску,Корм)\n2. Найдите ветеринара.\n3. Проверьте, безопасен ли ваш дом для животного."));
+                    (infoRepository.getInfoByInfoId(2L).getRecommendationsAdultPet())));
             case "/withDisabilitiesDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Обустроить свой дом для комфортного проживания собаки с ограниченными возможностями.\n2. Купить специальный корм.\n3. Сделать для него личное место."));
+                    (infoRepository.getInfoByInfoId(2L).getRecommendationsWithDisabilitiesPet())));
             case "/reasonsRefusalDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "1. Нет  возможности содержать животное.\n2. Нет документов подтверждающих личность.\n3. Зафиксированные случаи плохого обращения с животными."));
+                    (infoRepository.getInfoByInfoId(2L).getReasonsRefusalPet())));
             case "/tipsHandlerDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Многие владельцы кормят своего любимца перед прогулкой. Однако так делать неправильно и даже вредит вашему питомцу. Собака — хищник. С точки зрения физиологии, хищник должен сначала получить нагрузку, поймать свою добычу и только потом её съесть. После еды хищники отдыхают, и собака так же должна отдыхать после прогулки и кормления."));
+                    (infoRepository.getInfoByInfoId(2L).getTipsHandlerDog())));
             case "/recommendationsHandlerDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Сергей Петров\nСтаж 3год.\nНомер телефона: 678-54-89.\n\nГеоргий Иванов\nСтаж 7лет.\nНомер телефона: 679-76-99."));
+                    (infoRepository.getInfoByInfoId(2L).getRecommendationsHandlerDog())));
             case "/volunteerDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     "Ожидайте первый освободившийся волонтёр свяжется с вами."));
         }
