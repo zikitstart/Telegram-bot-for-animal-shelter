@@ -87,6 +87,12 @@ CREATE TABLE info
     recommendations_handler_dog           VARCHAR(500)
 );
 
+INSERT INTO volunteer (chat_id, surname, first_name, last_name, phone_number)
+VALUES (1,'Сидоров','Павел','Николаевич','255-40-78');
+
+INSERT INTO volunteer (chat_id, surname, first_name, last_name, phone_number)
+VALUES (2,'Косыгина','Мария','Леонидовна','444-44-45');
+
 INSERT INTO info (info_id, dating_rules_pet, list_documents_pet, transporting_pet, recommendations_little_pet,
                   recommendations_adult_pet,
                   recommendations_with_disabilities_pet, reasons_refusal_pet, tips_handler_dog,
