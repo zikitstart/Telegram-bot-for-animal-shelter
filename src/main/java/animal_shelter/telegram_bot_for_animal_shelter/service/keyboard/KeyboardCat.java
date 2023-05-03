@@ -49,7 +49,7 @@ public class KeyboardCat {
                 },
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Оформление пропуска").callbackData("/registrationPassCat"),
-                        new InlineKeyboardButton("Техника безопасности").callbackData("/safetyPrecautionsCat")
+                        new InlineKeyboardButton("Техника безопасности").callbackData("/safetyPrecautionsCat"),
                 },
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Позвать волонтера").callbackData("/volunteerCat")
@@ -94,8 +94,12 @@ public class KeyboardCat {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Фото животного").callbackData("/photoReportCat"),
-                        new InlineKeyboardButton("Текстовый отчёт").callbackData("/textReportCat")
+                        new InlineKeyboardButton("Фото животного").callbackData("/photoCat"),
+                        new InlineKeyboardButton("Рацион животного").callbackData("/dietCat")
+                },
+                new InlineKeyboardButton[]{
+                        new InlineKeyboardButton("Самочувствие и привыкание к новому месту").callbackData("/addictiveCat"),
+                        new InlineKeyboardButton("Изменение в поведении").callbackData("/changesCat")
                 },
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат в предыдущее меню").callbackData("/cat")
