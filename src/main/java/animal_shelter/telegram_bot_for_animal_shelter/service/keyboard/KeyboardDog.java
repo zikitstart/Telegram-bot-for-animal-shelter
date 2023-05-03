@@ -91,12 +91,8 @@ public class KeyboardDog {
     public void menuButtonsReportDogShelter(Update update) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Фото животного").callbackData("/photoDog"),
-                        new InlineKeyboardButton("Рацион животного").callbackData("/dietDog")
-                },
-                new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Самочувствие и привыкание к новому месту").callbackData("/addictiveDog"),
-                        new InlineKeyboardButton("Изменение в поведении").callbackData("/changesDog")
+                        new InlineKeyboardButton("Фото животного").callbackData("/photoReportDog"),
+                        new InlineKeyboardButton("Текстовый отчёт").callbackData("/textReportDog")
                 },
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат в предыдущее меню").callbackData("/dog")
