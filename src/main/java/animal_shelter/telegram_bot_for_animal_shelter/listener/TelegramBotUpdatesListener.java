@@ -12,6 +12,8 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.KeyboardButton;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -69,7 +71,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     //Обработчик
     private void handleUpdate(Update update) {
-        if (update.message() != null && update.message().text().startsWith("/start")) {
+        if (update.message() != null && update.message().text() != null && update.message().text().startsWith("/start")) {
             startMenu(update);
             return;
         }
@@ -142,14 +144,22 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     (infoRepository.getInfoByInfoId(2L).getRecommendationsHandlerDog())));
             case "/volunteerDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     "Ожидайте первый освободившийся волонтёр свяжется с вами."));
-            case "/contactDetailsDog", "/contactDetailsCat" -> {
-                KeyboardButton keyboardButton = new KeyboardButton("Отправить номер телефона").requestContact(true);
-                ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButton);
-                this.telegramBot.execute(
-                        new SendMessage(update.callbackQuery().from().id(), "Добавил вам кнопку рядом с клавиатурой. Нажмите для того, чтобы поделиться номером телефона.").replyMarkup(replyKeyboardMarkup));
-                return;
+            case "/contactDetailsDog" -> {
+                dropClientToDbIfNeeded(update, PetType.DOG);
+                getPhoneNumberButton(update);
+            }
+            case "/contactDetailsCat" -> {
+                dropClientToDbIfNeeded(update, PetType.CAT);
+                getPhoneNumberButton(update);
             }
         }
+    }
+
+    private void getPhoneNumberButton(Update update) {
+        KeyboardButton keyboardButton = new KeyboardButton("Отправить номер телефона").requestContact(true);
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButton);
+        this.telegramBot.execute(
+                new SendMessage(update.callbackQuery().from().id(), "Добавил вам кнопку рядом с клавиатурой. Нажмите для того, чтобы поделиться номером телефона.").replyMarkup(replyKeyboardMarkup));
     }
 
     private void dropClientToDbIfNeeded(Update update, PetType pet) {

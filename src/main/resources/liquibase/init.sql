@@ -16,7 +16,7 @@ CREATE TABLE pet
 );
 
 -- changeset zikit:1
-CREATE TABLE "user"
+CREATE TABLE client
 (
     client_id BIGSERIAL PRIMARY KEY,
     chat_id          BIGINT NOT NULL,
