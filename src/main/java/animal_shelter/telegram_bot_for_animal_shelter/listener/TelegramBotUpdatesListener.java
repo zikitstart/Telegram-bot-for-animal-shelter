@@ -1,5 +1,8 @@
 package animal_shelter.telegram_bot_for_animal_shelter.listener;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
+import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
+import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardDog;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardCat;
 import com.pengrad.telegrambot.TelegramBot;
@@ -22,10 +25,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final KeyboardCat keyboardCat;
     private final KeyboardDog keyboardDog;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog) {
+    private final ClientService clientService;
+
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ClientService clientService) {
         this.telegramBot = telegramBot;
         this.keyboardCat = keyboardCat;
         this.keyboardDog = keyboardDog;
+        this.clientService = clientService;
         telegramBot.setUpdatesListener(this);
     }
 
@@ -54,11 +60,27 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     //Обработчик
     private void handleUpdate(Update update) {
         try {
-            if (update.message() != null && update.message().text().startsWith("/start")) {
+            if (update.message() != null && update.message().text() != null && update.message().text().startsWith("/start")) {
                 startMenu(update);
                 return;
             }
+
+            if (update.message() != null && update.message().contact().phoneNumber() != null) {
+                clientService.fillClientPhoneNumberByChatId(update.message().chat().id(), update.message().contact().phoneNumber());
+                return;
+            }
+
             switch (update.callbackQuery().data()) {
+                case "/contactDetailsDog":
+                    if (update.callbackQuery().data().startsWith("/contactDetailsDog")) {
+                        dropClientToDbIfNeeded(update, PetType.DOG);
+                        keyboardDog.handleContactDetailsDog(update);
+                    }
+                case "/contactDetailsCat":
+                    if (update.callbackQuery().data().startsWith("/contactDetailsCat")) {
+                        dropClientToDbIfNeeded(update, PetType.CAT);
+                        keyboardCat.handleContactDetailsCat(update);
+                    }
                 case "/selectShelter":
                     if (update.callbackQuery().data().startsWith("/selectShelter")) {
                         selectShelterMenu(update);
@@ -202,6 +224,18 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             }
         } catch (NullPointerException e) {
             log.error("Была ошибка NullPointerException" + e.getMessage());
+        }
+    }
+
+    private void dropClientToDbIfNeeded(Update update, PetType pet) {
+        if (clientService.getClientByChatIdAndPetType(update.callbackQuery().from().id(), pet) == null) {
+            clientService.createClient(new Client(
+                    update.callbackQuery().from().id(),
+                    update.callbackQuery().from().username(),
+                    update.callbackQuery().from().firstName(),
+                    update.callbackQuery().from().lastName(),
+                    pet
+            ));
         }
     }
 }

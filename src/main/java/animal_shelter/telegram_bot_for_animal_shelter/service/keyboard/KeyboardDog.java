@@ -4,6 +4,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.KeyboardButton;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
@@ -201,5 +203,12 @@ public class KeyboardDog {
                 new SendMessage(update.callbackQuery().from().id(),
                         "Ожидайте первый освободившийся волонтёр свяжется с вами."));
         //Здесь будет метод с волонтёром.
+    }
+
+    public void handleContactDetailsDog(Update update) {
+        KeyboardButton keyboardButton = new KeyboardButton("Отправить номер телефона").requestContact(true);
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButton);
+        this.telegramBot.execute(
+                new SendMessage(update.callbackQuery().from().id(), "Добавил вам кнопку рядом с клавиатурой. Нажмите для того, чтобы поделиться номером телефона.").replyMarkup(replyKeyboardMarkup));
     }
 }
