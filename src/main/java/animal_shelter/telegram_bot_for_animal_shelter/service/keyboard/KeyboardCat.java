@@ -2,10 +2,13 @@ package animal_shelter.telegram_bot_for_animal_shelter.service.keyboard;
 
 import animal_shelter.telegram_bot_for_animal_shelter.model.Shelter;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ShelterRepository;
+import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.KeyboardButton;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class KeyboardCat {
 
     private final ShelterRepository shelterRepository;
+
     private final TelegramBot telegramBot;
 
     public KeyboardCat(ShelterRepository shelterRepository, TelegramBot telegramBot) {

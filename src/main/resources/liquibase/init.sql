@@ -7,23 +7,24 @@ CREATE TYPE status as enum ('FREE', 'TRIAL', 'EXTRA_14', 'EXTRA_30', 'DENIED');
 -- changeset DeafMist:2
 CREATE TABLE pet
 (
-    pet_id          BIGSERIAL PRIMARY KEY,
-    age_in_months   INT         NOT NULL,
-    name            VARCHAR(30) NOT NULL,
-    pet_type        pet_type    NOT NULL,
+    pet_id BIGSERIAL PRIMARY KEY,
+    age_in_months INT NOT NULL,
+    name VARCHAR(30) NOT NULL,
+    pet_type pet_type NOT NULL,
     user_details_id BIGINT,
-    shelter_id      BIGINT      NOT NULL,
-    pet_status      status      NOT NULL
+    shelter_id      BIGINT      NOT NULL
 );
 
 -- changeset zikit:1
 CREATE TABLE "user"
 (
-    chat_id      BIGSERIAL PRIMARY KEY,
-    surname      VARCHAR(25) NOT NULL,
-    first_name   VARCHAR(25),
-    last_name    VARCHAR(25),
-    phone_number VARCHAR(25) NOT NULL
+    client_id BIGSERIAL PRIMARY KEY,
+    chat_id          BIGINT NOT NULL,
+    surname          VARCHAR(25) NOT NULL,
+    first_name       VARCHAR(25),
+    last_name        VARCHAR(25),
+    phone_number     VARCHAR(25),
+    pet_type         pet_type NOT NULL
 );
 
 CREATE TABLE shelter
@@ -41,11 +42,11 @@ CREATE TABLE shelter
 -- changeset jokeproofee:1
 CREATE TABLE volunteer
 (
-    chat_id      BIGSERIAL PRIMARY KEY,
-    surname      VARCHAR(25) NOT NULL,
-    first_name   VARCHAR(25),
-    last_name    VARCHAR(25),
-    phone_number VARCHAR(25) NOT NULL
+    chat_id          BIGSERIAL PRIMARY KEY,
+    surname          VARCHAR(25) NOT NULL,
+    first_name       VARCHAR(25),
+    last_name        VARCHAR(25),
+    phone_number     VARCHAR(25) NOT NULL
 );
 
 --changeset DeafMist:3
@@ -58,11 +59,12 @@ CREATE TABLE report
     pet_id         BIGINT    NOT NULL
 );
 
-CREATE TABLE user_details
+CREATE TABLE client_details
 (
-    chat_id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    pets    BIGINT[]
+    client_details_id BIGSERIAL PRIMARY KEY,
+    client_id         BIGINT NOT NULL,
+    pet_id            BIGINT NOT NULL,
+    status            status NOT NULL
 );
 
 CREATE TABLE shelter_volunteers
@@ -152,14 +154,14 @@ VALUES (2, 'Приют Бирюлево',
         'При посещении данного заведения,запрещено кормить животных,общаться с ними без контроля волонтёра,курить,употреблять алкоголь и пищу.',
         'Телефон для получения пропуска: 783-02-29');
 
-INSERT INTO pet (age_in_months, name, pet_type, shelter_id, pet_status)
-VALUES (3, 'Васька', 'CAT', 1, 'FREE');
+INSERT INTO pet (age_in_months, name, pet_type, shelter_id)
+VALUES (3, 'Васька', 'CAT', 1);
 
-INSERT INTO pet (age_in_months, name, pet_type, shelter_id, pet_status)
-VALUES (11, 'Мурка', 'CAT', 1, 'FREE');
+INSERT INTO pet (age_in_months, name, pet_type, shelter_id)
+VALUES (11, 'Мурка', 'CAT', 1);
 
-INSERT INTO pet (age_in_months, name, pet_type, shelter_id, pet_status)
-VALUES (5, 'Шарик', 'DOG', 2, 'FREE');
+INSERT INTO pet (age_in_months, name, pet_type, shelter_id)
+VALUES (5, 'Шарик', 'DOG', 2);
 
-INSERT INTO pet (age_in_months, name, pet_type, shelter_id, pet_status)
-VALUES (17, 'Кошмарик', 'DOG', 2, 'FREE');
+INSERT INTO pet (age_in_months, name, pet_type, shelter_id)
+VALUES (17, 'Кошмарик', 'DOG', 2);

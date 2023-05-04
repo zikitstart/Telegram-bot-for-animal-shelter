@@ -2,6 +2,9 @@ package animal_shelter.telegram_bot_for_animal_shelter.listener;
 
 import animal_shelter.telegram_bot_for_animal_shelter.repository.InfoRepository;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ShelterRepository;
+import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
+import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
+import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardDog;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardCat;
 import com.pengrad.telegrambot.TelegramBot;
@@ -26,10 +29,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final ShelterRepository shelterRepository;
     private final InfoRepository infoRepository;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ShelterRepository shelterRepository, InfoRepository infoRepository) {
+    private final ClientService clientService;
+
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ClientService clientService, ShelterRepository shelterRepository, InfoRepository infoRepository) {
         this.telegramBot = telegramBot;
         this.keyboardCat = keyboardCat;
         this.keyboardDog = keyboardDog;
+        this.clientService = clientService;
         this.shelterRepository = shelterRepository;
         this.infoRepository = infoRepository;
         telegramBot.setUpdatesListener(this);
@@ -67,6 +73,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             startMenu(update);
             return;
         }
+
+        if (update.message() != null && update.message().contact().phoneNumber() != null) {
+            clientService.fillClientPhoneNumberByChatId(update.message().chat().id(), update.message().contact().phoneNumber());
+            return;
+        }
+
         switch (update.callbackQuery().data()) {
             case "/selectShelter" -> selectShelterMenu(update);
             case "/cat" -> keyboardCat.menuButtonsCatShelter(update);
@@ -130,6 +142,25 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     (infoRepository.getInfoByInfoId(2L).getRecommendationsHandlerDog())));
             case "/volunteerDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     "Ожидайте первый освободившийся волонтёр свяжется с вами."));
+            case "/contactDetailsDog", "/contactDetailsCat" -> {
+                KeyboardButton keyboardButton = new KeyboardButton("Отправить номер телефона").requestContact(true);
+                ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButton);
+                this.telegramBot.execute(
+                        new SendMessage(update.callbackQuery().from().id(), "Добавил вам кнопку рядом с клавиатурой. Нажмите для того, чтобы поделиться номером телефона.").replyMarkup(replyKeyboardMarkup));
+                return;
+            }
+        }
+    }
+
+    private void dropClientToDbIfNeeded(Update update, PetType pet) {
+        if (clientService.getClientByChatIdAndPetType(update.callbackQuery().from().id(), pet) == null) {
+            clientService.createClient(new Client(
+                    update.callbackQuery().from().id(),
+                    update.callbackQuery().from().username(),
+                    update.callbackQuery().from().firstName(),
+                    update.callbackQuery().from().lastName(),
+                    pet
+            ));
         }
     }
 }

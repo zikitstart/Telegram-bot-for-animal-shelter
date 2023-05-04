@@ -1,15 +1,19 @@
 package animal_shelter.telegram_bot_for_animal_shelter.model;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import java.util.List;
 
 // Класс для описания домашнего питомца
 @Entity
 @Table(name = "pet")
+@TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,17 +29,15 @@ public class Pet {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "pet_type", nullable = false)
-    private String petType;
+    @Type(type = "pgsql_enum")
+    private PetType petType;
 
-    @ManyToOne
-    @JoinColumn(name = "user_details_id")
-    private UserDetails user;
+    @OneToOne(mappedBy = "petId")
+    private ClientDetails clientDetailsId;
 
     @ManyToOne
     @JoinColumn(name = "shelter_id", nullable = false)
     private Shelter shelterId;
-
-    @Column(name = "pet_status", nullable = false)
-    private String petStatus;
 }
