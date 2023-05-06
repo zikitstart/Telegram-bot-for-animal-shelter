@@ -26,7 +26,7 @@ public class Client {
     @Column(name = "chat_id", nullable = false)
     private Long chatId;
 
-    @Column(name = "surname", nullable = false)
+    @Column(name = "surname")
     private String surname;
 
     @Column(name = "first_name")

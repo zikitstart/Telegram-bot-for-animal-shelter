@@ -14,11 +14,12 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
+import com.pengrad.telegrambot.request.DeleteMessage;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -58,6 +59,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton("Усыновить питомца").callbackData("/selectShelter"));
         this.telegramBot.execute(new SendMessage(update.message().chat().id(), "Привет я бот-помошник!!!\n\nЕсли у тебя есть какие-то вопросы или желание усыновить питомца\n\nЖми кнопку!!!").replyMarkup(inlineKeyboardMarkup));
+
     }
 
     //Выбор приюта (Общий метод на два приюта)
@@ -65,6 +67,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         InlineKeyboardButton cat = new InlineKeyboardButton("Приют для кошек").callbackData("/cat");
         InlineKeyboardButton dog = new InlineKeyboardButton("Приют для собак").callbackData("/dog");
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup(cat, dog);
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                 "Приветствую пользователь, это телеграмм-бот для приюта домашних животных.\n\n Пожалуйста выбери приют:").replyMarkup(keyboard));
     }

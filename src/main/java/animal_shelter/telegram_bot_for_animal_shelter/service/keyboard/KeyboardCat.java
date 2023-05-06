@@ -1,14 +1,11 @@
 package animal_shelter.telegram_bot_for_animal_shelter.service.keyboard;
 
-import animal_shelter.telegram_bot_for_animal_shelter.model.Shelter;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ShelterRepository;
-import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.KeyboardButton;
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
+import com.pengrad.telegrambot.request.DeleteMessage;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +37,7 @@ public class KeyboardCat {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат к выбору приюта").callbackData("/selectShelter")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Вас приветствует приют для кошек: "+ (shelterRepository.getSheltersByShelterId(1L).getName()) +"\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
@@ -61,6 +59,7 @@ public class KeyboardCat {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат к предыдущему меню").callbackData("/cat")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Для детальной информации выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
@@ -90,6 +89,7 @@ public class KeyboardCat {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат к предыдущему меню").callbackData("/cat")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Инструкция по усыновлению кота.\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
@@ -104,18 +104,7 @@ public class KeyboardCat {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат в предыдущее меню").callbackData("/cat")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Заполните отчёт о питомце:").replyMarkup(inlineKeyboardMarkup));
     }
-    //Доработка отчёта
-//    public void handleDietCatShelter(Update update) {
-//        this.telegramBot.execute(
-//                new SendMessage(update.callbackQuery().from().id(),
-//                        "Впишите текст отчёта о рационе кота:"));
-////        if (update.message().text() != null){
-////            String text = update.message().text();
-////            Long chatId = update.message().chat().id();
-////            Report report = new Report();
-////            report.setPetReport(text);
-////        }
-//    }
 }
