@@ -20,7 +20,7 @@ CREATE TABLE client
 (
     client_id BIGSERIAL PRIMARY KEY,
     chat_id          BIGINT NOT NULL,
-    surname          VARCHAR(25) NOT NULL,
+    surname          VARCHAR(25),
     first_name       VARCHAR(25),
     last_name        VARCHAR(25),
     phone_number     VARCHAR(25),
@@ -43,7 +43,7 @@ CREATE TABLE shelter
 CREATE TABLE volunteer
 (
     chat_id          BIGSERIAL PRIMARY KEY,
-    surname          VARCHAR(25) NOT NULL,
+    surname          VARCHAR(25),
     first_name       VARCHAR(25),
     last_name        VARCHAR(25),
     phone_number     VARCHAR(25) NOT NULL

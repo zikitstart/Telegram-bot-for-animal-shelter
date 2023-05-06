@@ -4,8 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.KeyboardButton;
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
+import com.pengrad.telegrambot.request.DeleteMessage;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +32,7 @@ public class KeyboardDog {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат к выбору приюта").callbackData("/selectShelter")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Вас приветствует приют для собак 'Теремок'.\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
 
     }
@@ -54,6 +54,7 @@ public class KeyboardDog {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат к предыдущему меню").callbackData("/dog")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Часы работы: 9:00-20:00\nАдрес: просп. Большой Смоленский, д. 9.\nТелефон: 374-15-15\n\nДля детальной информации выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
@@ -86,6 +87,7 @@ public class KeyboardDog {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат к предыдущему меню").callbackData("/dog")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Инструкция по усыновлению собаки.\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
@@ -99,6 +101,7 @@ public class KeyboardDog {
                 new InlineKeyboardButton[]{
                         new InlineKeyboardButton("Возврат в предыдущее меню").callbackData("/dog")
                 });
+        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Заполните отчёт о питомце:").replyMarkup(inlineKeyboardMarkup));
     }
 }
