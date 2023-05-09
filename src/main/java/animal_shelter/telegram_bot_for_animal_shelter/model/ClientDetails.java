@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 // Класс для пользователей, которые взяли животное из приюта
 @Entity
@@ -21,7 +22,7 @@ public class ClientDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "client_details_id")
-    private Long userDetailsId;
+    private Long clientDetailsId;
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
@@ -32,7 +33,18 @@ public class ClientDetails {
     private Pet petId;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "previous_status")
+    @Type(type = "pgsql_enum")
+    private Status prevStatus;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     @Type(type = "pgsql_enum")
     private Status status;
+
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @Column(name = "was_notified_of_status_change", nullable = false)
+    private boolean wasNotifiedOfStatusChange;
 }
