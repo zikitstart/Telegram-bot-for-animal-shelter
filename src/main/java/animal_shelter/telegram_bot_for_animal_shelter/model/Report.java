@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 // Класс для описания структуры ежедневного отчета
 @Entity
@@ -26,7 +26,7 @@ public class Report {
     private byte[] photo;
 
     @Column(name = "date_of_report", nullable = false)
-    private LocalDateTime dateOfReport;
+    private LocalDate dateOfReport;
 
     @ManyToOne
     @JoinColumn(name = "pet_id", nullable = false)

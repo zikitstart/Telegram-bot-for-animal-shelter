@@ -79,7 +79,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             return;
         }
 
-        if (update.message() != null && update.message().contact().phoneNumber() != null) {
+        if (update.message() != null && update.message().contact() != null && update.message().contact().phoneNumber() != null) {
             clientService.fillClientPhoneNumberByChatId(update.message().chat().id(), update.message().contact().phoneNumber());
             return;
         }

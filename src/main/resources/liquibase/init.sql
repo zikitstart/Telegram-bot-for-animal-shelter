@@ -2,7 +2,7 @@
 
 -- changeset DeafMist:1
 CREATE TYPE pet_type as enum ('CAT', 'DOG');
-CREATE TYPE status as enum ('FREE', 'TRIAL', 'EXTRA_14', 'EXTRA_30', 'DENIED');
+CREATE TYPE status as enum ('TRIAL', 'EXTRA_14', 'EXTRA_30', 'DENIED', 'ACCEPTED', 'WAIT_FOR_DECISION');
 
 -- changeset DeafMist:2
 CREATE TABLE pet
@@ -55,7 +55,7 @@ CREATE TABLE report
     report_id      BIGSERIAL PRIMARY KEY,
     pet_report     TEXT,
     photo          BYTEA,
-    date_of_report TIMESTAMP NOT NULL,
+    date_of_report DATE NOT NULL,
     pet_id         BIGINT    NOT NULL
 );
 
@@ -64,7 +64,10 @@ CREATE TABLE client_details
     client_details_id BIGSERIAL PRIMARY KEY,
     client_id         BIGINT NOT NULL,
     pet_id            BIGINT NOT NULL,
-    status            status NOT NULL
+    previous_status   status,
+    status            status NOT NULL,
+    start_date        DATE NOT NULL,
+    was_notified_of_status_change BOOLEAN NOT NULL
 );
 
 CREATE TABLE shelter_volunteers

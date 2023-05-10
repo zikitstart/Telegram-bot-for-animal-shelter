@@ -4,11 +4,13 @@ import animal_shelter.telegram_bot_for_animal_shelter.model.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
     //Найти отчёт по petId от начала до окончания испытательного срока
     Report findReportByPetId(Long petId);
+
+    Report getReportByPetIdAndDateOfReport(long petId, LocalDate dateOfReport);
 }
