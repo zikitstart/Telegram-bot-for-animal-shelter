@@ -29,12 +29,8 @@ class ClientServiceImplTest {
     @Test
     @DisplayName("When an object is created with parameters passed to it, then true")
     void createClient() {
-        assertEquals(client1.getChatId(),1L);
-        assertEquals(client1.getSurname(),"Ковалёв");
-        assertEquals(client1.getFirstName(),"Сергей");
-        assertEquals(client1.getLastName(),"Петрович");
-        assertEquals(client1.getPhoneNumber(),"234-56-78");
-        assertEquals(client1.getPetType(),PetType.CAT);
+        Client clientExpected = new Client(1L,"Ковалёв","Сергей","Петрович","234-56-78",PetType.CAT);
+        assertEquals(clientExpected,client1);
     }
 
     @Test

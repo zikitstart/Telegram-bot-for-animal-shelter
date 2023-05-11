@@ -4,6 +4,7 @@ import animal_shelter.telegram_bot_for_animal_shelter.repository.InfoRepository;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ShelterRepository;
 import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
 import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
+import animal_shelter.telegram_bot_for_animal_shelter.repository.VolunteerRepository;
 import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardDog;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardCat;
@@ -31,16 +32,18 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final KeyboardDog keyboardDog;
     private final ShelterRepository shelterRepository;
     private final InfoRepository infoRepository;
+    private final VolunteerRepository volunteerRepository;
 
     private final ClientService clientService;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ClientService clientService, ShelterRepository shelterRepository, InfoRepository infoRepository) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ClientService clientService, ShelterRepository shelterRepository, InfoRepository infoRepository, VolunteerRepository volunteerRepository) {
         this.telegramBot = telegramBot;
         this.keyboardCat = keyboardCat;
         this.keyboardDog = keyboardDog;
         this.clientService = clientService;
         this.shelterRepository = shelterRepository;
         this.infoRepository = infoRepository;
+        this.volunteerRepository = volunteerRepository;
         telegramBot.setUpdatesListener(this);
     }
 
@@ -113,7 +116,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case "/reasonsRefusalCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     (infoRepository.getInfoByInfoId(1L).getReasonsRefusalPet())));
             case "/volunteerCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Ожидайте первый освободившийся волонтёр свяжется с вами."));
+                    ("Контактные данные волонтёра: " + "\n" +
+                            volunteerRepository.findVolunteerByChatId(1L).getSurname() + "\n" +
+                            volunteerRepository.findVolunteerByChatId(1L).getFirstName() + "\n" +
+                            volunteerRepository.findVolunteerByChatId(1L).getLastName() + "\n" +
+                            volunteerRepository.findVolunteerByChatId(1L).getPhoneNumber())));
 
             case "/dog" -> keyboardDog.menuButtonsDogShelter(update);
             case "/infoDog" -> keyboardDog.menuButtonsInfoDogShelter(update);
@@ -146,7 +153,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case "/recommendationsHandlerDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     (infoRepository.getInfoByInfoId(2L).getRecommendationsHandlerDog())));
             case "/volunteerDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
-                    "Ожидайте первый освободившийся волонтёр свяжется с вами."));
+                    ("Контактные данные волонтёра: " + "\n" +
+                            volunteerRepository.findVolunteerByChatId(2L).getSurname() + "\n" +
+                            volunteerRepository.findVolunteerByChatId(2L).getFirstName() + "\n" +
+                            volunteerRepository.findVolunteerByChatId(2L).getLastName() + "\n" +
+                            volunteerRepository.findVolunteerByChatId(2L).getPhoneNumber())));
             case "/contactDetailsDog" -> {
                 dropClientToDbIfNeeded(update, PetType.DOG);
                 getPhoneNumberButton(update);
