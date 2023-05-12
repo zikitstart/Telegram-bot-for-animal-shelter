@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/client")
+@RequestMapping("/client-details")
 @RestController
 public class ClientDetailsController {
 

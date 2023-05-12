@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -48,5 +47,10 @@ public class ClientServiceImpl implements ClientService {
                     e.setPhoneNumber(phoneNumber);
                     updateClient(e);
                 });
+    }
+
+    @Override
+    public void deleteClient(Long chatId){
+        clientRepository.deleteById(chatId);
     }
 }

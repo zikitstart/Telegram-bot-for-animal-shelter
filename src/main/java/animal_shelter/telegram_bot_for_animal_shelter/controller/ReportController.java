@@ -65,8 +65,8 @@ public class ReportController {
                     )
             }
     )
-    public ResponseEntity<Report> readReport(@PathVariable Long id){
-        return ResponseEntity.ok(reportService.readReport(id));
+    public ResponseEntity<Report> getReport(@PathVariable Long id){
+        return ResponseEntity.ok(reportService.getReport(id));
     }
     @PutMapping
     @Operation(
@@ -90,7 +90,7 @@ public class ReportController {
             }
     )
     public ResponseEntity<Report> updateReport(@RequestBody Report report){
-        if (reportService.readReport(report.getPetId().getPetId()) ==null){
+        if (reportService.getReport(report.getPetId().getPetId()) ==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(reportService.updateReport(report));
@@ -117,7 +117,7 @@ public class ReportController {
             }
     )
     public ResponseEntity<Long> deleteReport(@PathVariable Long id){
-        if (reportService.readReport(id) == null) {
+        if (reportService.getReport(id) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         reportService.deleteReport(id);

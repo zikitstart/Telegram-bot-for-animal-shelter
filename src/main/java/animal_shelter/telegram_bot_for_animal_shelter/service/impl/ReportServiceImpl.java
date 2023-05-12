@@ -19,7 +19,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report readReport(Long id) {
+    public Report getReport(Long id) {
         return reportRepository.findReportByPetId(id);
     }
 

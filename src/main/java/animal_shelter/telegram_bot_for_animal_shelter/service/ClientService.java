@@ -15,4 +15,6 @@ public interface ClientService {
     List<Client> getClientByChatId(long chatId);
 
     void fillClientPhoneNumberByChatId(long chatId, String phoneNumber);
+
+    void deleteClient(Long chatId);
 }
