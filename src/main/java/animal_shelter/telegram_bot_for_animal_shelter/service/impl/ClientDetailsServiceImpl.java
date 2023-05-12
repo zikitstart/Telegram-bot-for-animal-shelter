@@ -36,8 +36,8 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     // Получаем список клиентов, которые должны каждый день присылать отчеты
     @Override
     public List<ClientDetails> getActualClients() {
-        List<ClientDetails> clients = getClientsWithExtraPeriod();
-
+        List<ClientDetails> clients = new ArrayList<>();
+        clients.addAll(getClientsWithExtraPeriod());
         clients.addAll(clientDetailsRepository.findClientDetailsByStatus(Status.TRIAL));
 
         return clients;
@@ -117,6 +117,11 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
         });
 
         return clients;
+    }
+
+    @Override
+    public List<ClientDetails> getClientsInStatusWaitFoForDecision(){
+        return clientDetailsRepository.findClientDetailsByWasNotifiedOfStatusChangeAndStatus(false,Status.WAIT_FOR_DECISION);
     }
 
     // Получение списка клиентов, у которых волонтер сменил статус, для последующей отправки соответствующих сообщений
