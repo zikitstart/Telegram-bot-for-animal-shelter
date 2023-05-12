@@ -172,6 +172,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private void getPhoneNumberButton(Update update) {
         KeyboardButton keyboardButton = new KeyboardButton("Отправить номер телефона").requestContact(true);
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButton);
+        replyKeyboardMarkup.oneTimeKeyboard(true);
         this.telegramBot.execute(
                 new SendMessage(update.callbackQuery().from().id(), "Добавил вам кнопку рядом с клавиатурой. Нажмите для того, чтобы поделиться номером телефона.").replyMarkup(replyKeyboardMarkup));
     }

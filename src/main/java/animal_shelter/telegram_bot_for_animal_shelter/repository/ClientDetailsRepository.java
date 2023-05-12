@@ -12,4 +12,6 @@ public interface ClientDetailsRepository extends JpaRepository<ClientDetails, Lo
     List<ClientDetails> findClientDetailsByStatus(Status status);
 
     List<ClientDetails> findClientDetailsByWasNotifiedOfStatusChangeAndStatusNotLike(boolean wasNotifiedOfStatusChange, Status status);
+
+    List<ClientDetails> findClientDetailsByWasNotifiedOfStatusChangeAndStatus(boolean wasNotifiedOfStatusChange, Status status);
 }
