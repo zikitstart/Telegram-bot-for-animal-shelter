@@ -22,6 +22,11 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
         this.reportRepository = reportRepository;
     }
 
+    @Override
+    public void updateClient(ClientDetails clientDetails) {
+        clientDetailsRepository.save(clientDetails);
+    }
+
     // Получаем список клиентов, которые проходят добавочный срок
     @Override
     public List<ClientDetails> getClientsWithExtraPeriod() {
@@ -37,6 +42,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     @Override
     public List<ClientDetails> getActualClients() {
         List<ClientDetails> clients = new ArrayList<>();
+
         clients.addAll(getClientsWithExtraPeriod());
         clients.addAll(clientDetailsRepository.findClientDetailsByStatus(Status.TRIAL));
 
@@ -68,65 +74,69 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     // Получаем список клиентов, которые сегодня закончили свой TRIAL период
     @Override
     public List<ClientDetails> getClientsWhoEndTheirTrialPeriod() {
-        List<ClientDetails> clients = clientDetailsRepository.findClientDetailsByStatus(Status.TRIAL).stream()
+        return clientDetailsRepository.findClientDetailsByStatus(Status.TRIAL).stream()
                 .filter(client -> client.getStartDate().equals(LocalDate.now().minusDays(30)))
                 .toList();
+    }
 
-        clients.forEach(client -> {
+    @Override
+    public void setClientsStatusesWhoEndTheirTrialPeriodToWaitForDecision() {
+        getClientsWhoEndTheirTrialPeriod().forEach(client -> {
             client.setWasNotifiedOfStatusChange(false);
             client.setPrevStatus(Status.TRIAL);
             client.setStatus(Status.WAIT_FOR_DECISION);
 
             clientDetailsRepository.save(client);
         });
-
-        return clients;
     }
 
     // Получаем список клиентов, которые сегодня закончили свой EXTRA_14 период
     @Override
     public List<ClientDetails> getClientsWhoEndTheirExtra14Period() {
-        List<ClientDetails> clients = clientDetailsRepository.findClientDetailsByStatus(Status.EXTRA_14).stream()
+        return clientDetailsRepository.findClientDetailsByStatus(Status.EXTRA_14).stream()
                 .filter(client -> client.getStartDate().equals(LocalDate.now().minusDays(44)))
                 .toList();
+    }
 
-        clients.forEach(client -> {
+    @Override
+    public void setClientsStatusesWhoEndTheirExtra14PeriodToWaitForDecision() {
+        getClientsWhoEndTheirExtra14Period().forEach(client -> {
             client.setWasNotifiedOfStatusChange(false);
             client.setPrevStatus(Status.EXTRA_14);
             client.setStatus(Status.WAIT_FOR_DECISION);
 
             clientDetailsRepository.save(client);
         });
-
-        return clients;
     }
 
     // Получаем список клиентов, которые сегодня закончили свой EXTRA_30 период
     @Override
     public List<ClientDetails> getClientsWhoEndTheirExtra30Period() {
-        List<ClientDetails> clients = clientDetailsRepository.findClientDetailsByStatus(Status.EXTRA_30).stream()
+        return clientDetailsRepository.findClientDetailsByStatus(Status.EXTRA_30).stream()
                 .filter(client -> client.getStartDate().equals(LocalDate.now().minusDays(60)))
                 .toList();
+    }
 
-        clients.forEach(client -> {
+    @Override
+    public void setClientsStatusesWhoEndTheirExtra30PeriodToWaitForDecision() {
+        getClientsWhoEndTheirExtra30Period().forEach(client -> {
             client.setWasNotifiedOfStatusChange(false);
             client.setPrevStatus(Status.EXTRA_30);
             client.setStatus(Status.WAIT_FOR_DECISION);
 
             clientDetailsRepository.save(client);
         });
-
-        return clients;
     }
 
+    // Получение списка клиентов, находящихся в ожидании
     @Override
-    public List<ClientDetails> getClientsInStatusWaitFoForDecision(){
+    public List<ClientDetails> getClientsInStatusWaitForDecision(){
         return clientDetailsRepository.findClientDetailsByWasNotifiedOfStatusChangeAndStatus(false,Status.WAIT_FOR_DECISION);
     }
 
     // Получение списка клиентов, у которых волонтер сменил статус, для последующей отправки соответствующих сообщений
     @Override
-    public List<ClientDetails> getClientsWhoMustGetDecision() {
+    public List<ClientDetails> getClientsWhoMustGetNotificationAboutStatusChange() {
         return clientDetailsRepository.findClientDetailsByWasNotifiedOfStatusChangeAndStatusNotLike(false, Status.WAIT_FOR_DECISION);
     }
 }
