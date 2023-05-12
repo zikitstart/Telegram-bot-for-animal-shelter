@@ -84,7 +84,7 @@ public class ClientDetailsController {
     }
     @GetMapping("/in-status-decision")
     public ResponseEntity<List<ClientDetails>> getClientsInStatusWaitFoForDecision(){
-        List<ClientDetails> clientDetails = clientDetailsService.getClientsInStatusWaitFoForDecision();
+        List<ClientDetails> clientDetails = clientDetailsService.getClientsInStatusWaitForDecision();
         if (clientDetails == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -93,7 +93,7 @@ public class ClientDetailsController {
     }
     @GetMapping("/decision")
     public ResponseEntity<List<ClientDetails>> getClientsWhoMustGetDecision(){
-        List<ClientDetails> clientDetails = clientDetailsService.getClientsWhoMustGetDecision();
+        List<ClientDetails> clientDetails = clientDetailsService.getClientsWhoMustGetNotificationAboutStatusChange();
         if (clientDetails == null) {
             return ResponseEntity.notFound().build();
         } else {
