@@ -26,7 +26,9 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     @Override
     public ClientDetails getClientByClientId(Client clientId) {
         return clientDetailsRepository.findClientDetailsByClientId(clientId);
-      
+    }
+
+    @Override
     public void createClientDetails(ClientDetails clientDetails) {
         clientDetailsRepository.save(clientDetails);
     }
