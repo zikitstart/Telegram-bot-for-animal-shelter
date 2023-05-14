@@ -1,26 +1,36 @@
 package animal_shelter.telegram_bot_for_animal_shelter.listener;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
+import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
+import animal_shelter.telegram_bot_for_animal_shelter.model.Report;
+import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.InfoRepository;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ShelterRepository;
-import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
-import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.VolunteerRepository;
+import animal_shelter.telegram_bot_for_animal_shelter.service.ClientDetailsService;
 import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
-import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardDog;
+import animal_shelter.telegram_bot_for_animal_shelter.service.ReportService;
 import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardCat;
+import animal_shelter.telegram_bot_for_animal_shelter.service.keyboard.KeyboardDog;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.File;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.KeyboardButton;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.DeleteMessage;
+import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -36,7 +46,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final ClientService clientService;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ClientService clientService, ShelterRepository shelterRepository, InfoRepository infoRepository, VolunteerRepository volunteerRepository) {
+    private final ClientDetailsService clientDetailsService;
+
+    private final ReportService reportService;
+
+    private final Map<Long, String> clientPressedButton = new HashMap<>();
+
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ClientService clientService, ShelterRepository shelterRepository, InfoRepository infoRepository, VolunteerRepository volunteerRepository, ClientDetailsService clientDetailsService, ReportService reportService) {
         this.telegramBot = telegramBot;
         this.keyboardCat = keyboardCat;
         this.keyboardDog = keyboardDog;
@@ -44,6 +60,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.shelterRepository = shelterRepository;
         this.infoRepository = infoRepository;
         this.volunteerRepository = volunteerRepository;
+        this.clientDetailsService = clientDetailsService;
+        this.reportService = reportService;
         telegramBot.setUpdatesListener(this);
     }
 
@@ -87,12 +105,21 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             return;
         }
 
+        if (update.message() != null && clientPressedButton.get(update.message().chat().id()) != null) {
+            getReportFromClient(update);
+            return;
+        }
+
+        if (update.callbackQuery() == null) {
+            return;
+        }
+
         switch (update.callbackQuery().data()) {
             case "/selectShelter" -> selectShelterMenu(update);
             case "/cat" -> keyboardCat.menuButtonsCatShelter(update);
             case "/infoCat" -> keyboardCat.menuButtonsInfoCatShelter(update);
             case "/takeCat" -> keyboardCat.menuButtonsTakeCatShelter(update);
-            case "/reportCat" -> keyboardCat.menuButtonsReportCatShelter(update);
+            case "/reportCat" -> clientPressedButton.put(update.callbackQuery().from().id(), "/reportCat");
             case "/detailedInfoCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     (shelterRepository.getSheltersByShelterId(1L).getDescription())));
             case "/visitingCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
@@ -125,7 +152,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case "/dog" -> keyboardDog.menuButtonsDogShelter(update);
             case "/infoDog" -> keyboardDog.menuButtonsInfoDogShelter(update);
             case "/takeDog" -> keyboardDog.menuButtonsTakeDogShelter(update);
-            case "/reportDog" -> keyboardDog.menuButtonsReportDogShelter(update);
+            case "/reportDog" -> clientPressedButton.put(update.callbackQuery().from().id(), "/reportDog");
             case "/detailedInfoDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     (shelterRepository.getSheltersByShelterId(2L).getDescription())));
             case "/visitingDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
@@ -167,6 +194,58 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 getPhoneNumberButton(update);
             }
         }
+    }
+
+    private void getReportFromClient(Update update) {
+        String pressedButton = clientPressedButton.get(update.message().chat().id());
+        String message = "";
+
+        PetType petType;
+        if (pressedButton.equals("/reportCat")) {
+            petType = PetType.CAT;
+        }
+        else {
+            petType = PetType.DOG;
+        }
+
+        ClientDetails clientDetails = clientDetailsService.getClientByClientId(
+                clientService.getClientByChatId(update.message().chat().id()).stream()
+                        .filter(client -> client.getPetType().equals(petType)).findAny().orElse(null));
+
+        if (clientDetails == null) {
+            this.telegramBot.execute(new SendMessage(update.message().chat().id(), "Дорогой пользователь, ты еще не усыновил " + petType + ". Возможно, ты нажал на кнопку не в том меню"));
+            clientPressedButton.remove(update.message().chat().id());
+            return;
+        }
+
+        if (update.message().caption() == null || update.message().photo() == null) {
+            message = "Дорогой усыновитель, мы заметили, что ты заполняешь отчет не так подробно, как необходимо. Пожалуйста, подойди ответственнее к этому занятию. Нажмите заново на кнопку \"Отправить отчет\" и пришлите отчет заново в формате фото + текст. В противном случае волонтеры приюта будут обязаны самолично проверять условия содержания животного.";
+        }
+        else {
+            Report report = new Report();
+            report.setPetReport(update.message().text());
+
+            GetFile getFile = new GetFile(update.message().photo()[2].fileId());
+            byte[] photo;
+            try {
+                File file = telegramBot.execute(getFile).file();
+                photo = telegramBot.getFileContent(file);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                clientPressedButton.remove(update.message().chat().id());
+                return;
+            }
+
+            report.setPhoto(photo);
+            report.setDateOfReport(LocalDate.now());
+            report.setPetId(clientDetails.getPetId());
+
+            reportService.createReport(report);
+            message = "Спасибо за отправленный отчет! Он будет отправлен волонтеру на проверку.";
+        }
+        clientPressedButton.remove(update.message().chat().id());
+        this.telegramBot.execute(new SendMessage(update.message().chat().id(), message));
     }
 
     private void getPhoneNumberButton(Update update) {

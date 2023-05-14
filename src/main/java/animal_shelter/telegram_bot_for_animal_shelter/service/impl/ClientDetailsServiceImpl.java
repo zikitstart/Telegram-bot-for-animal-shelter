@@ -1,5 +1,6 @@
 package animal_shelter.telegram_bot_for_animal_shelter.service.impl;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
 import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
 import animal_shelter.telegram_bot_for_animal_shelter.model.enums.Status;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ClientDetailsRepository;
@@ -20,6 +21,11 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     public ClientDetailsServiceImpl(ClientDetailsRepository clientDetailsRepository, ReportRepository reportRepository) {
         this.clientDetailsRepository = clientDetailsRepository;
         this.reportRepository = reportRepository;
+    }
+
+    @Override
+    public ClientDetails getClientByClientId(Client clientId) {
+        return clientDetailsRepository.findClientDetailsByClientId(clientId);
     }
 
     // Получаем список клиентов, которые проходят добавочный срок
