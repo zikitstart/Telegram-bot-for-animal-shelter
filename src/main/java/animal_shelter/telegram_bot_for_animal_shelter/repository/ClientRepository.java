@@ -11,4 +11,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     //Получение пользователя по chatId
     List<Client> findClientByChatId(Long chatId);
+    Client findClientByUserId(Long userId);
 }

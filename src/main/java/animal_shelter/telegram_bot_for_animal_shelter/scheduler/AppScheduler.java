@@ -77,7 +77,7 @@ public class AppScheduler {
                         case EXTRA_30 -> message = ConstantAnswers.EXTRA_30_CLIENT_MESSAGE;
                     }
                     client.setWasNotifiedOfStatusChange(true);
-                    clientDetailsService.updateClient(client);
+                    clientDetailsService.updateClientDetails(client);
                     this.telegramBot.execute(
                             new SendMessage(client.getClientId().getChatId(), message)
                     );

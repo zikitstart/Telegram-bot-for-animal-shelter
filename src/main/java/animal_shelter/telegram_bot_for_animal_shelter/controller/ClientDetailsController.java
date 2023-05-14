@@ -2,10 +2,13 @@ package animal_shelter.telegram_bot_for_animal_shelter.controller;
 
 import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
 import animal_shelter.telegram_bot_for_animal_shelter.service.impl.ClientDetailsServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +20,63 @@ public class ClientDetailsController {
 
     public ClientDetailsController(ClientDetailsServiceImpl clientDetailsService) {
         this.clientDetailsService = clientDetailsService;
+    }
+
+    @PostMapping
+    @Operation(
+            summary = "Создание ClientDetails.",
+            description = "Метод для создания ClientDetails."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "ClientDetails создан."
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Параметры запроса отсутствуют или имеют некорректный формат."
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
+                    )
+            }
+    )
+    //На доработке
+    public ResponseEntity<ClientDetails> createClient(@RequestBody ClientDetails clientDetails){
+        clientDetailsService.createClientDetails(clientDetails);
+        return ResponseEntity.ok(clientDetails);
+    }
+
+    @PutMapping
+    @Operation(
+            summary = "Изменение клиента.",
+            description = "Метод для изменения клиента."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Клиент изменён."
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Параметры запроса отсутствуют или имеют некорректный формат."
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
+                    )
+            }
+    )
+    //На доработке
+    public ResponseEntity<ClientDetails> updateClient(@RequestBody ClientDetails clientDetails){
+        if (clientDetailsService.getClientDetailsByClientDetailsId(clientDetails.getClientDetailsId()) ==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        clientDetailsService.updateClientDetails(clientDetails);
+        return ResponseEntity.ok(clientDetails);
     }
 
     @GetMapping("/extra")

@@ -5,7 +5,11 @@ import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
 import java.util.List;
 
 public interface ClientDetailsService {
-    void updateClient(ClientDetails clientDetails);
+    void createClientDetails(ClientDetails clientDetails);
+
+    void updateClientDetails(ClientDetails clientDetails);
+
+    ClientDetails getClientDetailsByClientDetailsId(Long clientDetailsId);
 
     List<ClientDetails> getClientsWithExtraPeriod();
 
