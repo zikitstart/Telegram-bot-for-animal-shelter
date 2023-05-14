@@ -8,6 +8,12 @@ import java.util.List;
 public interface ClientDetailsService {
     ClientDetails getClientByClientId(Client clientId);
 
+    void createClientDetails(ClientDetails clientDetails);
+
+    void updateClientDetails(ClientDetails clientDetails);
+
+    ClientDetails getClientDetailsByClientDetailsId(Long clientDetailsId);
+
     List<ClientDetails> getClientsWithExtraPeriod();
 
     List<ClientDetails> getActualClients();
@@ -18,13 +24,19 @@ public interface ClientDetailsService {
 
     List<ClientDetails> getClientsWhoEndTheirTrialPeriod();
 
+    void setClientsStatusesWhoEndTheirTrialPeriodToWaitForDecision();
+
     // Получаем список клиентов, которые сегодня закончили свой EXTRA_14 период
     List<ClientDetails> getClientsWhoEndTheirExtra14Period();
 
+    void setClientsStatusesWhoEndTheirExtra14PeriodToWaitForDecision();
+
     List<ClientDetails> getClientsWhoEndTheirExtra30Period();
 
-    List<ClientDetails> getClientsInStatusWaitFoForDecision();
+    void setClientsStatusesWhoEndTheirExtra30PeriodToWaitForDecision();
+
+    List<ClientDetails> getClientsInStatusWaitForDecision();
 
     // Получение списка клиентов, у которых волонтер сменил статус, для последующей отправки соответствующих сообщений
-    List<ClientDetails> getClientsWhoMustGetDecision();
+    List<ClientDetails> getClientsWhoMustGetNotificationAboutStatusChange();
 }

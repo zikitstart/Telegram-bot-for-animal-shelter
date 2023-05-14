@@ -11,6 +11,8 @@ import java.util.List;
 @Repository
 public interface ClientDetailsRepository extends JpaRepository<ClientDetails, Long> {
     ClientDetails findClientDetailsByClientId(Client clientId);
+  
+    ClientDetails findClientDetailsByClientDetailsId(Long clientDetailsId);
 
     List<ClientDetails> findClientDetailsByStatus(Status status);
 

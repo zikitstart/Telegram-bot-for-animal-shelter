@@ -50,7 +50,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deleteClient(Long chatId){
-        clientRepository.deleteById(chatId);
+    public Client getClientByUserId(long userId) {
+        return clientRepository.findClientByUserId(userId);
+    }
+
+    @Override
+    public Client deleteClient(Long userId){
+        Client client = getClientByUserId(userId);
+        clientRepository.delete(client);
+        return client;
     }
 }
