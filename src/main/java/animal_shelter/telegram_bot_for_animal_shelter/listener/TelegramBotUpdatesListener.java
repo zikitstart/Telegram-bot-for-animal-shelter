@@ -213,13 +213,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         .filter(client -> client.getPetType().equals(petType)).findAny().orElse(null));
 
         if (clientDetails == null) {
-            this.telegramBot.execute(new SendMessage(update.message().chat().id(), "Дорогой пользователь, ты еще не усыновил " + petType + ". Возможно, ты нажал на кнопку не в том меню"));
+            this.telegramBot.execute(new SendMessage(update.message().chat().id(), "Дорогой пользователь, ты еще не усыновил " + petType + ".\nВозможно, ты нажал на кнопку не в том меню"));
             clientPressedButton.remove(update.message().chat().id());
             return;
         }
 
         if (update.message().caption() == null || update.message().photo() == null) {
-            message = "Дорогой усыновитель, мы заметили, что ты заполняешь отчет не так подробно, как необходимо. Пожалуйста, подойди ответственнее к этому занятию. Нажмите заново на кнопку \"Отправить отчет\" и пришлите отчет заново в формате фото + текст. В противном случае волонтеры приюта будут обязаны самолично проверять условия содержания животного.";
+            message = "Дорогой усыновитель, мы заметили, что ты заполняешь отчет не так подробно, как необходимо. Пожалуйста, подойди ответственнее к этому занятию.\nНажми заново на кнопку \"Отправить отчет\" и пришли отчет в формате фото + текст.\nВ противном случае волонтеры приюта будут обязаны самолично проверять условия содержания животного.";
         }
         else {
             Report report = new Report();
