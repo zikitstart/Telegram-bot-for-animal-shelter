@@ -1,6 +1,8 @@
 package animal_shelter.telegram_bot_for_animal_shelter.controller;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.Pet;
 import animal_shelter.telegram_bot_for_animal_shelter.model.Report;
+import animal_shelter.telegram_bot_for_animal_shelter.service.PetService;
 import animal_shelter.telegram_bot_for_animal_shelter.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ReportController {
 
+    private final PetService petService;
     private final ReportService reportService;
 
-    public ReportController(ReportService reportService) {
+    public ReportController(PetService petService, ReportService reportService) {
+        this.petService = petService;
         this.reportService = reportService;
     }
 
@@ -41,6 +45,7 @@ public class ReportController {
                     )
             }
     )
+    //На доработке
     public ResponseEntity<Report> createReport(@RequestBody Report report){
         return ResponseEntity.ok(reportService.createReport(report));
     }
@@ -65,8 +70,11 @@ public class ReportController {
                     )
             }
     )
+    //На доработке
     public ResponseEntity<Report> getReport(@PathVariable Long id){
-        return ResponseEntity.ok(reportService.getReport(id));
+        Pet pet = petService.getPet(id);
+        Report report = reportService.getReport(pet.getPetId());
+        return ResponseEntity.ok(report);
     }
     @PutMapping
     @Operation(
@@ -89,6 +97,7 @@ public class ReportController {
                     )
             }
     )
+    //На доработке
     public ResponseEntity<Report> updateReport(@RequestBody Report report){
         if (reportService.getReport(report.getPetId().getPetId()) ==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -117,7 +126,7 @@ public class ReportController {
             }
     )
     public ResponseEntity<Long> deleteReport(@PathVariable Long id){
-        if (reportService.getReport(id) == null) {
+        if (reportService.getReportByReportId(id) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         reportService.deleteReport(id);

@@ -23,8 +23,17 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     }
 
     @Override
-    public void updateClient(ClientDetails clientDetails) {
+    public void createClientDetails(ClientDetails clientDetails) {
         clientDetailsRepository.save(clientDetails);
+    }
+    @Override
+    public void updateClientDetails(ClientDetails clientDetails) {
+        clientDetailsRepository.save(clientDetails);
+    }
+
+    @Override
+    public ClientDetails getClientDetailsByClientDetailsId(Long clientDetailsId){
+        return clientDetailsRepository.findClientDetailsByClientDetailsId(clientDetailsId);
     }
 
     // Получаем список клиентов, которые проходят добавочный срок

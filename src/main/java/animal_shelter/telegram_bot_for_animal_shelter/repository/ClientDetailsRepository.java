@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface ClientDetailsRepository extends JpaRepository<ClientDetails, Long> {
+    ClientDetails findClientDetailsByClientDetailsId(Long clientDetailsId);
+
     List<ClientDetails> findClientDetailsByStatus(Status status);
 
     List<ClientDetails> findClientDetailsByWasNotifiedOfStatusChangeAndStatusNotLike(boolean wasNotifiedOfStatusChange, Status status);

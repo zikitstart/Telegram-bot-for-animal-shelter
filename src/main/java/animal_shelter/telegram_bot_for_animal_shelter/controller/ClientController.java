@@ -43,7 +43,11 @@ public class ClientController {
                     )
             }
     )
+    //На доработке
     public ResponseEntity<Client> createClient(@RequestBody Client client){
+        if (clientService.getClientByChatId(client.getChatId()) ==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         clientService.createClient(client);
         return ResponseEntity.ok(client);
     }
@@ -69,6 +73,7 @@ public class ClientController {
                     )
             }
     )
+    //На доработке
     public ResponseEntity<Client> updateClient(@RequestBody Client client){
         if (clientService.getClientByChatId(client.getChatId()) ==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -99,7 +104,11 @@ public class ClientController {
             }
     )
     public ResponseEntity<Client> getClientByChatIdAndPetType(@RequestParam("chatId") Long chatId, @RequestParam("petType") PetType petType){
-        return ResponseEntity.ok(clientService.getClientByChatIdAndPetType(chatId,petType));
+        if (clientService.getClientByChatIdAndPetType(chatId,petType) == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        Client client = clientService.getClientByChatIdAndPetType(chatId,petType);
+        return ResponseEntity.ok(client);
     }
 
     @GetMapping("/chatId")
@@ -124,13 +133,16 @@ public class ClientController {
             }
     )
     public ResponseEntity<List<Client>> getClientByChatId(@RequestParam("chatId")  Long chatId){
+        if (clientService.getClientByChatId(chatId) == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
         return ResponseEntity.ok(clientService.getClientByChatId(chatId));
     }
 
     @DeleteMapping("{id}")
     @Operation(
             summary = "Удаление клиента.",
-            description = "Метод для удаления клиента по id."
+            description = "Метод для удаления клиента по userId."
     )
     @ApiResponses(
             value = {
@@ -140,7 +152,7 @@ public class ClientController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "id отсутствует или имеет некорректный формат."
+                            description = "userId отсутствует или имеет некорректный формат."
                     ),
                     @ApiResponse(
                             responseCode = "500",
@@ -148,12 +160,12 @@ public class ClientController {
                     )
             }
     )
-    public ResponseEntity<Long> deleteClient(@RequestParam("id")  Long id){
-        if (clientService.getClientByChatId(id) == null) {
+    public ResponseEntity<Long> deleteClient(@RequestParam("id")  Long userId){
+        if (clientService.getClientByUserId(userId) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        clientService.deleteClient(id);
-        return ResponseEntity.ok(id);
+        clientService.deleteClient(userId);
+        return ResponseEntity.ok(userId);
     }
 
     //Возможно излишний метод,так как в телеграмме регистрация через номер телефона и он указывается перманентно

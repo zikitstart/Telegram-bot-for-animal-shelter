@@ -12,4 +12,5 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 
     //Найти питомца по признаку
     List<Pet> findPetsByPetType(PetType type);
+    Pet findPetByPetId(Long petId);
 }

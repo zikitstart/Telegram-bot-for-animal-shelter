@@ -23,13 +23,23 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.findReportByPetId(id);
     }
 
+    //Возможно не нужен
+    @Override
+    public Report getReportByReportId(Long id) {
+        return reportRepository.findReportByReportId(id);
+    }
+
     @Override
     public Report updateReport(Report report) {
         return reportRepository.save(report);
     }
 
     @Override
-    public void deleteReport(Long id) {
-        reportRepository.deleteById(id);
+    public Report deleteReport(Long id) {
+        Report report = reportRepository.findReportByReportId(id);
+        if (report != null){
+            reportRepository.delete(report);
+        }
+        return report;
     }
 }
