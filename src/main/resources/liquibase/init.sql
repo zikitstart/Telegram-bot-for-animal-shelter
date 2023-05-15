@@ -92,6 +92,9 @@ CREATE TABLE info
     recommendations_handler_dog           VARCHAR(500)
 );
 
+INSERT INTO client_details (client_details_id, client_id, pet_id, status, start_date, was_notified_of_status_change)
+VALUES (1,1,1,'TRIAL','2023-5-15',true);
+
 INSERT INTO volunteer (chat_id, surname, first_name, last_name, phone_number)
 VALUES (1,'Сидоров','Павел','Николаевич','255-40-78');
 
@@ -157,8 +160,8 @@ VALUES (2, 'Приют Бирюлево',
         'При посещении данного заведения,запрещено кормить животных,общаться с ними без контроля волонтёра,курить,употреблять алкоголь и пищу.',
         'Телефон для получения пропуска: 783-02-29');
 
-INSERT INTO pet (age_in_months, name, pet_type, shelter_id)
-VALUES (3, 'Васька', 'CAT', 1);
+INSERT INTO pet (age_in_months, name, pet_type,user_details_id, shelter_id)
+VALUES (3, 'Васька', 'CAT',1, 1);
 
 INSERT INTO pet (age_in_months, name, pet_type, shelter_id)
 VALUES (11, 'Мурка', 'CAT', 1);

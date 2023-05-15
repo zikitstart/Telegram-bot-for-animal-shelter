@@ -4,10 +4,13 @@ import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
 import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
 import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,66 +25,6 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @PostMapping
-    @Operation(
-            summary = "Создание клиента.",
-            description = "Метод для создания клиента."
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Клиент создан."
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Параметры запроса отсутствуют или имеют некорректный формат."
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
-                    )
-            }
-    )
-    //На доработке
-    public ResponseEntity<Client> createClient(@RequestBody Client client){
-        if (clientService.getClientByChatId(client.getChatId()) ==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        clientService.createClient(client);
-        return ResponseEntity.ok(client);
-    }
-
-    @PutMapping
-    @Operation(
-            summary = "Изменение клиента.",
-            description = "Метод для изменения клиента."
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Клиент изменён."
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Параметры запроса отсутствуют или имеют некорректный формат."
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
-                    )
-            }
-    )
-    //На доработке
-    public ResponseEntity<Client> updateClient(@RequestBody Client client){
-        if (clientService.getClientByChatId(client.getChatId()) ==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        clientService.updateClient(client);
-        return ResponseEntity.ok(client);
-    }
-
     @GetMapping("/chatId/petType")
     @Operation(
             summary = "Получение клиента по chatId и petType.",
@@ -91,23 +34,19 @@ public class ClientController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Клиент получен."
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "id отсутствует или имеет некорректный формат."
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
+                            description = "Клиент получен.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
                     )
             }
     )
-    public ResponseEntity<Client> getClientByChatIdAndPetType(@RequestParam("chatId") Long chatId, @RequestParam("petType") PetType petType){
-        if (clientService.getClientByChatIdAndPetType(chatId,petType) == null) {
+    public ResponseEntity<Client> getClientByChatIdAndPetType(@RequestParam("chatId") Long chatId, @RequestParam("petType") PetType petType) {
+        if (clientService.getClientByChatIdAndPetType(chatId, petType) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Client client = clientService.getClientByChatIdAndPetType(chatId,petType);
+        Client client = clientService.getClientByChatIdAndPetType(chatId, petType);
         return ResponseEntity.ok(client);
     }
 
@@ -120,19 +59,15 @@ public class ClientController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Клиент получен."
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "id отсутствует или имеет некорректный формат."
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
+                            description = "Клиент получен.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
                     )
             }
     )
-    public ResponseEntity<List<Client>> getClientByChatId(@RequestParam("chatId")  Long chatId){
+    public ResponseEntity<List<Client>> getClientByChatId(@RequestParam("chatId") Long chatId) {
         if (clientService.getClientByChatId(chatId) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -148,28 +83,19 @@ public class ClientController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Клиент удалён."
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "userId отсутствует или имеет некорректный формат."
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
+                            description = "Клиент удалён.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
                     )
             }
     )
-    public ResponseEntity<Long> deleteClient(@RequestParam("id")  Long userId){
+    public ResponseEntity<Long> deleteClient(@RequestParam("id") Long userId) {
         if (clientService.getClientByUserId(userId) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         clientService.deleteClient(userId);
         return ResponseEntity.ok(userId);
-    }
-
-    //Возможно излишний метод,так как в телеграмме регистрация через номер телефона и он указывается перманентно
-    public void addPhoneNumber(Long chatId, String phoneNumber) {
-        clientService.fillClientPhoneNumberByChatId(chatId, phoneNumber);
     }
 }
