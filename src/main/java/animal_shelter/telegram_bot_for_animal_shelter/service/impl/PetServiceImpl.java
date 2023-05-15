@@ -6,6 +6,7 @@ import animal_shelter.telegram_bot_for_animal_shelter.service.PetService;
 import org.springframework.stereotype.Service;
 
 @Service
+// Класс по работе с питомцами
 public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
@@ -13,6 +14,8 @@ public class PetServiceImpl implements PetService {
     public PetServiceImpl(PetRepository petRepository) {
         this.petRepository = petRepository;
     }
+
+    // Получение питомца по petId
     @Override
     public Pet getPet(Long petId){
         return petRepository.findPetByPetId(petId);

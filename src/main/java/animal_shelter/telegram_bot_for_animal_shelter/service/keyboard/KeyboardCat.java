@@ -10,7 +10,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
 @Service
-//Клавиатуры/Меню для приюта кошек
+// Класс с Клавиатурами/Меню для приюта кошек
 public class KeyboardCat {
 
     private final ShelterRepository shelterRepository;
@@ -22,7 +22,7 @@ public class KeyboardCat {
         this.telegramBot = telegramBot;
     }
 
-    //Кнопки меню после "Выбор приюта"
+    // Кнопки меню после "Выбор приюта"
     public void menuButtonsCatShelter(Update update) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
@@ -41,7 +41,7 @@ public class KeyboardCat {
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Вас приветствует приют для кошек: "+ (shelterRepository.getSheltersByShelterId(1L).getName()) +"\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
-    //Кнопки меню "Информация о приюте"
+    // Кнопки меню "Информация о приюте"
     public void menuButtonsInfoCatShelter(Update update) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
@@ -63,7 +63,7 @@ public class KeyboardCat {
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Для детальной информации выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
-    //Кнопки меню "Как взять кота из приюта"
+    // Кнопки меню "Как взять кота из приюта"
     public void menuButtonsTakeCatShelter(Update update) {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(

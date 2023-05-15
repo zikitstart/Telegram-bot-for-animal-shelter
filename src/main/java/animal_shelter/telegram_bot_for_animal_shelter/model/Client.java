@@ -2,19 +2,20 @@ package animal_shelter.telegram_bot_for_animal_shelter.model;
 
 import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
 import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 // Класс для описания пользователей, зарегистрировавшихся в системе и оставивших контактные данные
 @Entity
 @Table(name = "client")
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Client {
@@ -65,5 +66,18 @@ public class Client {
         this.firstName = firstName;
         this.lastName = lastName;
         this.petType = petType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(userId, client.userId) && Objects.equals(chatId, client.chatId) && Objects.equals(surname, client.surname) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(phoneNumber, client.phoneNumber) && petType == client.petType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, chatId, surname, firstName, lastName, phoneNumber, petType);
     }
 }

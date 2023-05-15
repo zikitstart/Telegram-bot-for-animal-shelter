@@ -1,17 +1,18 @@
 package animal_shelter.telegram_bot_for_animal_shelter.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 // Класс для описания приюта
 @Entity
 @Table(name = "shelter")
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Shelter {
@@ -48,4 +49,17 @@ public class Shelter {
             inverseJoinColumns = @JoinColumn(name = "volunteer_id")
     )
     private Set<Volunteer> volunteerIds = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shelter shelter = (Shelter) o;
+        return Objects.equals(shelterId, shelter.shelterId) && Objects.equals(name, shelter.name) && Objects.equals(address, shelter.address) && Objects.equals(drivingDirections, shelter.drivingDirections) && Objects.equals(description, shelter.description) && Objects.equals(schedule, shelter.schedule) && Objects.equals(rules, shelter.rules) && Objects.equals(contacts, shelter.contacts) && Objects.equals(volunteerIds, shelter.volunteerIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(shelterId, name, address, drivingDirections, description, schedule, rules, contacts, volunteerIds);
+    }
 }

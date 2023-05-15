@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/report")
 @RestController
+// Контроллер для работы с отчётами
 public class ReportController {
 
     private final PetService petService;
@@ -28,14 +29,14 @@ public class ReportController {
     }
     @GetMapping("{id}")
     @Operation(
-            summary = "Получение отчёта.",
-            description = "Метод для получения отчёта."
+            summary = "Получение отчёта",
+            description = "Метод для получения отчёта по id"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Отчёт получен.",
+                            description = "Отчёт получен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Client.class)

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Service
+// Класс для работы с приютами
 public class ShelterServiceImpl implements ShelterService {
     private final ShelterRepository shelterRepository;
 
@@ -19,6 +20,7 @@ public class ShelterServiceImpl implements ShelterService {
         this.shelterRepository = shelterRepository;
     }
 
+    // Получение всех приютов и их волонтёров
     @Override
     public Map<Shelter, Set<Volunteer>> getAllSheltersAndTheirVolunteers() {
         List<Shelter> shelters = shelterRepository.findAll();

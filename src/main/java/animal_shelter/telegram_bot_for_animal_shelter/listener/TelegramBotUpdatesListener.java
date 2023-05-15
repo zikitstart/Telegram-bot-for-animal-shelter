@@ -34,7 +34,7 @@ import java.util.Map;
 
 @Component
 @Slf4j
-//Обработка сообщений
+// Класс для обработки сообщений
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
@@ -43,13 +43,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final ShelterRepository shelterRepository;
     private final InfoRepository infoRepository;
     private final VolunteerRepository volunteerRepository;
-
     private final ClientService clientService;
-
     private final ClientDetailsService clientDetailsService;
-
     private final ReportService reportService;
-
     private final Map<Long, String> clientPressedButton = new HashMap<>();
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, KeyboardCat keyboardCat, KeyboardDog keyboardDog, ClientService clientService, ShelterRepository shelterRepository, InfoRepository infoRepository, VolunteerRepository volunteerRepository, ClientDetailsService clientDetailsService, ReportService reportService) {
@@ -196,6 +192,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         }
     }
 
+    // Метод для получения отчёта от клиента (Текст и Фото)
     private void getReportFromClient(Update update) {
         String pressedButton = clientPressedButton.get(update.message().chat().id());
         String message = "";
@@ -248,6 +245,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         this.telegramBot.execute(new SendMessage(update.message().chat().id(), message));
     }
 
+    // Метод для получения кнопки добавления контактных данных
     private void getPhoneNumberButton(Update update) {
         KeyboardButton keyboardButton = new KeyboardButton("Отправить номер телефона").requestContact(true);
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButton);
@@ -256,6 +254,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 new SendMessage(update.callbackQuery().from().id(), "Добавил вам кнопку рядом с клавиатурой. Нажмите для того, чтобы поделиться номером телефона.").replyMarkup(replyKeyboardMarkup));
     }
 
+    // Метод для создания клиента
     private void dropClientToDbIfNeeded(Update update, PetType pet) {
         if (clientService.getClientByChatIdAndPetType(update.callbackQuery().from().id(), pet) == null) {
             clientService.createClient(new Client(

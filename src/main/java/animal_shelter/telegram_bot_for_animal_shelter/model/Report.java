@@ -1,16 +1,18 @@
 package animal_shelter.telegram_bot_for_animal_shelter.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Objects;
 
 // Класс для описания структуры ежедневного отчета
 @Entity
 @Table(name = "report")
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Report {
@@ -31,4 +33,19 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "pet_id", nullable = false)
     private Pet petId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Report report = (Report) o;
+        return Objects.equals(reportId, report.reportId) && Objects.equals(petReport, report.petReport) && Arrays.equals(photo, report.photo) && Objects.equals(dateOfReport, report.dateOfReport) && Objects.equals(petId, report.petId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(reportId, petReport, dateOfReport, petId);
+        result = 31 * result + Arrays.hashCode(photo);
+        return result;
+    }
 }

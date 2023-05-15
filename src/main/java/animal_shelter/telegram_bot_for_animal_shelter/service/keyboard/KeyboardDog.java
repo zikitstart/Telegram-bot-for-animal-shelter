@@ -9,7 +9,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
 
 @Service
-//Клавиатуры/Меню для приюта собак
+// Класс с Клавиатурами/Меню для приюта собак
 public class KeyboardDog {
 
     private final TelegramBot telegramBot;
@@ -18,7 +18,7 @@ public class KeyboardDog {
         this.telegramBot = telegramBot;
     }
 
-    //Кнопки меню после "Выбор приюта"
+    // Кнопки меню после "Выбор приюта"
     public void menuButtonsDogShelter(Update update) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{
@@ -37,7 +37,7 @@ public class KeyboardDog {
 
     }
 
-    //Кнопки меню "Узнать информацию о приюте".
+    // Кнопки меню "Узнать информацию о приюте".
     public void menuButtonsInfoDogShelter(Update update) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{
@@ -58,7 +58,7 @@ public class KeyboardDog {
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Часы работы: 9:00-20:00\nАдрес: просп. Большой Смоленский, д. 9.\nТелефон: 374-15-15\n\nДля детальной информации выберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
 
-    //Кнопки меню "Как взять животное из приюта".
+    // Кнопки меню "Как взять животное из приюта".
     public void menuButtonsTakeDogShelter(Update update) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
                 new InlineKeyboardButton[]{

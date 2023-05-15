@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InfoRepository extends JpaRepository<Info, Long> {
 
+    // Получение информации по infoId
     Info getInfoByInfoId(Long id);
 }

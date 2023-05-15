@@ -2,20 +2,20 @@ package animal_shelter.telegram_bot_for_animal_shelter.model;
 
 import animal_shelter.telegram_bot_for_animal_shelter.model.enums.Status;
 import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 // Класс для пользователей, которые взяли животное из приюта
 @Entity
 @Table(name = "client_details")
 @TypeDef(name = "pgsql_enum", typeClass = PostgreSQLEnumType.class)
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientDetails {
@@ -47,6 +47,19 @@ public class ClientDetails {
 
     @Column(name = "was_notified_of_status_change", nullable = false)
     private boolean wasNotifiedOfStatusChange;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClientDetails that = (ClientDetails) o;
+        return wasNotifiedOfStatusChange == that.wasNotifiedOfStatusChange && Objects.equals(clientDetailsId, that.clientDetailsId) && Objects.equals(clientId, that.clientId) && Objects.equals(petId, that.petId) && prevStatus == that.prevStatus && status == that.status && Objects.equals(startDate, that.startDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clientDetailsId, clientId, petId, prevStatus, status, startDate, wasNotifiedOfStatusChange);
+    }
 
     @Override
     public String toString() {
