@@ -47,4 +47,16 @@ public class ClientDetails {
 
     @Column(name = "was_notified_of_status_change", nullable = false)
     private boolean wasNotifiedOfStatusChange;
+
+    @Override
+    public String toString() {
+        return "ClientDetails{" +
+                "clientDetailsId=" + clientDetailsId +
+                ", clientId=" + clientId +
+                ", prevStatus=" + prevStatus +
+                ", status=" + status +
+                ", startDate=" + startDate +
+                ", wasNotifiedOfStatusChange=" + wasNotifiedOfStatusChange +
+                '}';
+    }
 }

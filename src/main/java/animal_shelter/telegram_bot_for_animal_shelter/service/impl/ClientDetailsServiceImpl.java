@@ -1,5 +1,6 @@
 package animal_shelter.telegram_bot_for_animal_shelter.service.impl;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
 import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
 import animal_shelter.telegram_bot_for_animal_shelter.model.enums.Status;
 import animal_shelter.telegram_bot_for_animal_shelter.repository.ClientDetailsRepository;
@@ -23,9 +24,15 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
     }
 
     @Override
+    public ClientDetails getClientByClientId(Client clientId) {
+        return clientDetailsRepository.findClientDetailsByClientId(clientId);
+    }
+
+    @Override
     public void createClientDetails(ClientDetails clientDetails) {
         clientDetailsRepository.save(clientDetails);
     }
+      
     @Override
     public void updateClientDetails(ClientDetails clientDetails) {
         clientDetailsRepository.save(clientDetails);
