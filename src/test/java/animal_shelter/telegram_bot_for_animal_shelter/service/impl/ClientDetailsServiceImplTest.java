@@ -64,29 +64,4 @@ class ClientDetailsServiceImplTest {
         List<ClientDetails> actual = clientDetailsService.getActualClients();
         assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
-
-//    @Test
-//    void getClientsWithoutTodayReport() {
-//
-//    }
-//
-//    @Test
-//    void getClientsWithoutReportsForLastTwoDays() {
-//    }
-//
-//    @Test
-//    void getClientsWhoEndTheirTrialPeriod() {
-//    }
-//
-//    @Test
-//    void getClientsWhoEndTheirExtra14Period() {
-//    }
-//
-//    @Test
-//    void getClientsWhoEndTheirExtra30Period() {
-//    }
-//
-//    @Test
-//    void getClientsWhoMustGetDecision() {
-//    }
 }

@@ -1,12 +1,16 @@
 package animal_shelter.telegram_bot_for_animal_shelter.controller;
 
+import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
 import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
 import animal_shelter.telegram_bot_for_animal_shelter.service.impl.ClientDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,19 +35,14 @@ public class ClientDetailsController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "ClientDetails создан."
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Параметры запроса отсутствуют или имеют некорректный формат."
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
+                            description = "ClientDetails создан.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
                     )
             }
     )
-    //На доработке
     public ResponseEntity<ClientDetails> createClient(@RequestBody ClientDetails clientDetails){
         clientDetailsService.createClientDetails(clientDetails);
         return ResponseEntity.ok(clientDetails);
@@ -58,19 +57,14 @@ public class ClientDetailsController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Клиент изменён."
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Параметры запроса отсутствуют или имеют некорректный формат."
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Произошла ошибка, не зависящая от вызывающей стороны."
+                            description = "Клиент изменён.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
                     )
             }
     )
-    //На доработке
     public ResponseEntity<ClientDetails> updateClient(@RequestBody ClientDetails clientDetails){
         if (clientDetailsService.getClientDetailsByClientDetailsId(clientDetails.getClientDetailsId()) ==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

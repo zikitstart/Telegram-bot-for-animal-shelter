@@ -92,19 +92,4 @@ public class KeyboardCat {
         telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Инструкция по усыновлению кота.\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
-
-    //Кнопки меню "Отчёт о питомце"
-    public void menuButtonsReportCatShelter(Update update) {
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
-                new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Фото животного").callbackData("/photoReportCat"),
-                        new InlineKeyboardButton("Текстовый отчёт").callbackData("/textReportCat")
-                },
-                new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Возврат в предыдущее меню").callbackData("/cat")
-                });
-        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
-        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Заполните отчёт о питомце:").replyMarkup(inlineKeyboardMarkup));
-    }
 }

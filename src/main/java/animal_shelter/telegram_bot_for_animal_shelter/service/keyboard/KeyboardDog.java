@@ -90,18 +90,4 @@ public class KeyboardDog {
         telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
         this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Инструкция по усыновлению собаки.\n\nВыберите пункт меню:").replyMarkup(inlineKeyboardMarkup));
     }
-
-    //Кнопки меню "Отчёт о питомце"
-    public void menuButtonsReportDogShelter(Update update) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup(
-                new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Фото животного").callbackData("/photoReportDog"),
-                        new InlineKeyboardButton("Текстовый отчёт").callbackData("/textReportDog")
-                },
-                new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Возврат в предыдущее меню").callbackData("/dog")
-                });
-        telegramBot.execute(new DeleteMessage(update.callbackQuery().from().id(),update.callbackQuery().message().messageId()));
-        this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(), "Заполните отчёт о питомце:").replyMarkup(inlineKeyboardMarkup));
-    }
 }

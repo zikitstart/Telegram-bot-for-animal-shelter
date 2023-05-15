@@ -223,7 +223,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         }
         else {
             Report report = new Report();
-            report.setPetReport(update.message().text());
+            report.setPetReport(update.message().caption());
 
             GetFile getFile = new GetFile(update.message().photo()[2].fileId());
             byte[] photo;
