@@ -6,7 +6,6 @@ import animal_shelter.telegram_bot_for_animal_shelter.service.ClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import java.util.List;
 
 @RequestMapping("/client")
 @RestController
+// Контроллер для работы с клиентом (Потенциальный усыновитель)
 public class ClientController {
     private final ClientService clientService;
 
@@ -25,10 +25,10 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping("/chatId/petType")
+    @GetMapping("/chatId-petType")
     @Operation(
             summary = "Получение клиента по chatId и petType.",
-            description = "Метод для получения клиента."
+            description = "Метод для получения данных клиента по chatId и petType."
     )
     @ApiResponses(
             value = {
@@ -53,7 +53,7 @@ public class ClientController {
     @GetMapping("/chatId")
     @Operation(
             summary = "Получение клиента по chatId.",
-            description = "Метод для получения клиента."
+            description = "Метод для получения данных клиента по chatId."
     )
     @ApiResponses(
             value = {
@@ -77,7 +77,7 @@ public class ClientController {
     @DeleteMapping("{id}")
     @Operation(
             summary = "Удаление клиента.",
-            description = "Метод для удаления клиента по userId."
+            description = "Метод для удаления данных клиента по userId."
     )
     @ApiResponses(
             value = {

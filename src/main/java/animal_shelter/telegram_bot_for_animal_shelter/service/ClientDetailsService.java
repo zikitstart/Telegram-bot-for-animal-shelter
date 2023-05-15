@@ -26,7 +26,6 @@ public interface ClientDetailsService {
 
     void setClientsStatusesWhoEndTheirTrialPeriodToWaitForDecision();
 
-    // Получаем список клиентов, которые сегодня закончили свой EXTRA_14 период
     List<ClientDetails> getClientsWhoEndTheirExtra14Period();
 
     void setClientsStatusesWhoEndTheirExtra14PeriodToWaitForDecision();
@@ -37,6 +36,5 @@ public interface ClientDetailsService {
 
     List<ClientDetails> getClientsInStatusWaitForDecision();
 
-    // Получение списка клиентов, у которых волонтер сменил статус, для последующей отправки соответствующих сообщений
     List<ClientDetails> getClientsWhoMustGetNotificationAboutStatusChange();
 }

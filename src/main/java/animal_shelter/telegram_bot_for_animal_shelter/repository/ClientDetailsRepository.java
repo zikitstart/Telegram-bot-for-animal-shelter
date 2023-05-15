@@ -10,13 +10,18 @@ import java.util.List;
 
 @Repository
 public interface ClientDetailsRepository extends JpaRepository<ClientDetails, Long> {
+    // Поиск усыновителя по clientId
     ClientDetails findClientDetailsByClientId(Client clientId);
-  
+
+    // Поиск усыновителя по clientDetailsId
     ClientDetails findClientDetailsByClientDetailsId(Long clientDetailsId);
 
+    // Поиск усыновителей по статусу
     List<ClientDetails> findClientDetailsByStatus(Status status);
 
+    // Поиск усыновителей у которых волонтер сменил статус
     List<ClientDetails> findClientDetailsByWasNotifiedOfStatusChangeAndStatusNotLike(boolean wasNotifiedOfStatusChange, Status status);
 
+    // Поиск усыновителей, находящихся в ожидании
     List<ClientDetails> findClientDetailsByWasNotifiedOfStatusChangeAndStatus(boolean wasNotifiedOfStatusChange, Status status);
 }

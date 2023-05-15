@@ -9,7 +9,9 @@ import java.util.List;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    //Получение пользователя по chatId
+    // Получение пользователя по chatId
     List<Client> findClientByChatId(Long chatId);
+
+    // Получение пользователя по userId
     Client findClientByUserId(Long userId);
 }

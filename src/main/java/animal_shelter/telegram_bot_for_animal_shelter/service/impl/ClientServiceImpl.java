@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+// Класс по работе с клиентами (Потенциальными усыновителями)
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
@@ -27,6 +28,7 @@ public class ClientServiceImpl implements ClientService {
         clientRepository.save(client);
     }
 
+    // Получение клиента по chatId и petType
     @Override
     public Client getClientByChatIdAndPetType(long chatId, PetType petType) {
         return clientRepository.findClientByChatId(chatId).stream()
@@ -35,11 +37,13 @@ public class ClientServiceImpl implements ClientService {
                 .orElse(null);
     }
 
+    // Получение клиента по chatId
     @Override
     public List<Client> getClientByChatId(long chatId) {
         return new ArrayList<>(clientRepository.findClientByChatId(chatId));
     }
 
+    // Добавление номера телефона клиенту
     @Override
     public void fillClientPhoneNumberByChatId(long chatId, String phoneNumber) {
         getClientByChatId(chatId)
@@ -49,11 +53,13 @@ public class ClientServiceImpl implements ClientService {
                 });
     }
 
+    // Получение клиента по userId
     @Override
     public Client getClientByUserId(long userId) {
         return clientRepository.findClientByUserId(userId);
     }
 
+    // Удаление клиента из базы данных
     @Override
     public Client deleteClient(Long userId){
         Client client = getClientByUserId(userId);

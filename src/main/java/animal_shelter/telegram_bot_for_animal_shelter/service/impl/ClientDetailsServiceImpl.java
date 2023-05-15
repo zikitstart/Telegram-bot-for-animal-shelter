@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+// Класс по работе с усыновителями
 public class ClientDetailsServiceImpl implements ClientDetailsService {
     private final ClientDetailsRepository clientDetailsRepository;
 
@@ -38,6 +39,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
         clientDetailsRepository.save(clientDetails);
     }
 
+    // Получение усыновителя по clientDetailsId
     @Override
     public ClientDetails getClientDetailsByClientDetailsId(Long clientDetailsId){
         return clientDetailsRepository.findClientDetailsByClientDetailsId(clientDetailsId);
@@ -95,6 +97,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
                 .toList();
     }
 
+    // Установка статуса усыновителям,которые закончили испытательный срок и находятся в ожидании
     @Override
     public void setClientsStatusesWhoEndTheirTrialPeriodToWaitForDecision() {
         getClientsWhoEndTheirTrialPeriod().forEach(client -> {
@@ -114,6 +117,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
                 .toList();
     }
 
+    // Установка статуса усыновителям,которые закончили добавочный испытательный срок сроком 14 дней и находятся в ожидании
     @Override
     public void setClientsStatusesWhoEndTheirExtra14PeriodToWaitForDecision() {
         getClientsWhoEndTheirExtra14Period().forEach(client -> {
@@ -133,6 +137,7 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
                 .toList();
     }
 
+    // Установка статуса усыновителям,которые закончили добавочный испытательный срок сроком 14 дней и находятся в ожидании
     @Override
     public void setClientsStatusesWhoEndTheirExtra30PeriodToWaitForDecision() {
         getClientsWhoEndTheirExtra30Period().forEach(client -> {
