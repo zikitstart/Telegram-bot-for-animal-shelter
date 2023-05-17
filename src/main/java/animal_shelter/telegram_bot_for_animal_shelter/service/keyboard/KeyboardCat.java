@@ -31,7 +31,7 @@ public class KeyboardCat {
                         new InlineKeyboardButton("Как взять животное из приюта").callbackData("/takeCat")
                 },
                 new InlineKeyboardButton[]{
-                        new InlineKeyboardButton("Прислать отчет о питомце (фото + текст)").callbackData("/reportCat"),
+                        new InlineKeyboardButton("Прислать отчет о питомце").callbackData("/reportCat"),
                         new InlineKeyboardButton("Позвать волонтера ").callbackData("/volunteerCat")
                 },
                 new InlineKeyboardButton[]{

@@ -115,7 +115,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case "/cat" -> keyboardCat.menuButtonsCatShelter(update);
             case "/infoCat" -> keyboardCat.menuButtonsInfoCatShelter(update);
             case "/takeCat" -> keyboardCat.menuButtonsTakeCatShelter(update);
-            case "/reportCat" -> clientPressedButton.put(update.callbackQuery().from().id(), "/reportCat");
+            case "/reportCat" -> {
+                telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),"Прикрепите отчёт в формате (фото животного + текст).\n\nТекстовый отчёт должен содержать информацию:\nРацион животного.\nОбщее самочувствие и привыкание к новому месту.\nИзменение в поведении: отказ от старых привычек, приобретение новых.\n\nТеперь прикрепите сюда отчёт:"));
+                clientPressedButton.put(update.callbackQuery().from().id(), "/reportCat");
+            }
             case "/detailedInfoCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     (shelterRepository.getSheltersByShelterId(1L).getDescription())));
             case "/visitingCat" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
@@ -148,7 +151,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case "/dog" -> keyboardDog.menuButtonsDogShelter(update);
             case "/infoDog" -> keyboardDog.menuButtonsInfoDogShelter(update);
             case "/takeDog" -> keyboardDog.menuButtonsTakeDogShelter(update);
-            case "/reportDog" -> clientPressedButton.put(update.callbackQuery().from().id(), "/reportDog");
+            case "/reportDog" -> {
+                telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),"Прикрепите отчёт в формате (фото животного + текст).\n\nТекстовый отчёт должен содержать информацию:\nРацион животного.\nОбщее самочувствие и привыкание к новому месту.\nИзменение в поведении: отказ от старых привычек, приобретение новых.\n\nТеперь прикрепите сюда отчёт:"));
+                clientPressedButton.put(update.callbackQuery().from().id(), "/reportDog");
+            }
             case "/detailedInfoDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
                     (shelterRepository.getSheltersByShelterId(2L).getDescription())));
             case "/visitingDog" -> this.telegramBot.execute(new SendMessage(update.callbackQuery().from().id(),
