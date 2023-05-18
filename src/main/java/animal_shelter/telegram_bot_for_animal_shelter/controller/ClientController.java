@@ -25,6 +25,58 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    @Operation(
+            summary = "Создание клиента.",
+            description = "Метод для создания клиента."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Клиент создан.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping
+    public ResponseEntity<Client> createClient(@RequestParam Long chatId, @RequestParam String surname, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String phoneNumber, @RequestParam PetType petType) {
+        Client client = new Client(chatId,surname,firstName,lastName,phoneNumber,petType);
+        if (clientService.getClientByChatIdAndPetType(client.getChatId(),client.getPetType()) != null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        clientService.createClient(client);
+        return ResponseEntity.ok(client);
+    }
+
+    @PutMapping
+    @Operation(
+            summary = "Изменение клиента.",
+            description = "Метод для изменения клиента."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Клиент изменён.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<Client> updateClient(@RequestParam Long userId, @RequestParam Long chatId, @RequestParam String surname, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String phoneNumber, @RequestParam PetType petType) {
+        Client client = new Client(userId,chatId,surname,firstName,lastName,phoneNumber,petType);
+        if (clientService.getClientByUserId(client.getUserId()) == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        clientService.updateClient(client);
+        return ResponseEntity.ok(client);
+    }
+
     @GetMapping("/chatId-petType")
     @Operation(
             summary = "Получение клиента по chatId и petType.",
