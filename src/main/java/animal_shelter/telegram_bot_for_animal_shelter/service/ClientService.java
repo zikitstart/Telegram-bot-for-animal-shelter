@@ -6,9 +6,9 @@ import animal_shelter.telegram_bot_for_animal_shelter.model.enums.PetType;
 import java.util.List;
 
 public interface ClientService {
-    void createClient(Client client);
+    Client createClient(Client client);
 
-    void updateClient(Client client);
+    Client updateClient(Client client);
 
     Client getClientByChatIdAndPetType(long chatId, PetType petType);
 

@@ -48,6 +48,14 @@ public class ClientDetails {
     @Column(name = "was_notified_of_status_change", nullable = false)
     private boolean wasNotifiedOfStatusChange;
 
+    public ClientDetails(Client clientId, Pet petId, Status status, LocalDate startDate, boolean wasNotifiedOfStatusChange) {
+        this.clientId = clientId;
+        this.petId = petId;
+        this.status = status;
+        this.startDate = startDate;
+        this.wasNotifiedOfStatusChange = wasNotifiedOfStatusChange;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

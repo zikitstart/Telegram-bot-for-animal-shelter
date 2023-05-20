@@ -18,14 +18,16 @@ public class ClientServiceImpl implements ClientService {
         this.clientRepository = clientRepository;
     }
 
+    //Создание клиента
     @Override
-    public void createClient(Client client) {
-        clientRepository.save(client);
+    public Client createClient(Client client) {
+        return clientRepository.save(client);
     }
 
+    //Обновление данных клиента
     @Override
-    public void updateClient(Client client) {
-        clientRepository.save(client);
+    public Client updateClient(Client client) {
+        return clientRepository.save(client);
     }
 
     // Получение клиента по chatId и petType
@@ -61,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
 
     // Удаление клиента из базы данных
     @Override
-    public Client deleteClient(Long userId){
+    public Client deleteClient(Long userId) {
         Client client = getClientByUserId(userId);
         clientRepository.delete(client);
         return client;
