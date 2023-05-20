@@ -43,12 +43,11 @@ public class ClientController {
     )
     @PostMapping
     public ResponseEntity<Client> createClient(@RequestParam Long chatId, @RequestParam String surname, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String phoneNumber, @RequestParam PetType petType) {
-        Client client = new Client(chatId,surname,firstName,lastName,phoneNumber,petType);
-        if (clientService.getClientByChatIdAndPetType(client.getChatId(),client.getPetType()) != null){
+        Client client = new Client(chatId, surname, firstName, lastName, phoneNumber, petType);
+        if (clientService.getClientByChatIdAndPetType(client.getChatId(), client.getPetType()) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        clientService.createClient(client);
-        return ResponseEntity.ok(client);
+        return ResponseEntity.ok(clientService.createClient(client));
     }
 
     @PutMapping
@@ -69,12 +68,11 @@ public class ClientController {
             }
     )
     public ResponseEntity<Client> updateClient(@RequestParam Long userId, @RequestParam Long chatId, @RequestParam String surname, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String phoneNumber, @RequestParam PetType petType) {
-        Client client = new Client(userId,chatId,surname,firstName,lastName,phoneNumber,petType);
-        if (clientService.getClientByUserId(client.getUserId()) == null){
+        Client client = new Client(userId, chatId, surname, firstName, lastName, phoneNumber, petType);
+        if (clientService.getClientByUserId(client.getUserId()) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        clientService.updateClient(client);
-        return ResponseEntity.ok(client);
+        return ResponseEntity.ok(clientService.updateClient(client));
     }
 
     @GetMapping("/chatId-petType")
@@ -96,10 +94,9 @@ public class ClientController {
     )
     public ResponseEntity<Client> getClientByChatIdAndPetType(@RequestParam("chatId") Long chatId, @RequestParam("petType") PetType petType) {
         if (clientService.getClientByChatIdAndPetType(chatId, petType) == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        Client client = clientService.getClientByChatIdAndPetType(chatId, petType);
-        return ResponseEntity.ok(client);
+        return ResponseEntity.ok(clientService.getClientByChatIdAndPetType(chatId, petType));
     }
 
     @GetMapping("/chatId")
@@ -120,8 +117,9 @@ public class ClientController {
             }
     )
     public ResponseEntity<List<Client>> getClientByChatId(@RequestParam("chatId") Long chatId) {
-        if (clientService.getClientByChatId(chatId) == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        List<Client> clients = clientService.getClientByChatId(chatId);
+        if (clients == null || clients.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(clientService.getClientByChatId(chatId));
     }
@@ -143,11 +141,10 @@ public class ClientController {
                     )
             }
     )
-    public ResponseEntity<Long> deleteClient(@RequestParam("id") Long userId) {
+    public ResponseEntity<Client> deleteClient(@RequestParam("id") Long userId) {
         if (clientService.getClientByUserId(userId) == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        clientService.deleteClient(userId);
-        return ResponseEntity.ok(userId);
+        return ResponseEntity.ok(clientService.deleteClient(userId));
     }
 }

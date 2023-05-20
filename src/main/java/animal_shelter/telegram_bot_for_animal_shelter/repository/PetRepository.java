@@ -10,9 +10,12 @@ import java.util.List;
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
 
-    // Поиск питомца по признаку
+    // Поиск питомцев по признаку
     List<Pet> findPetsByPetType(PetType type);
 
     // Поиск питомца по petId
     Pet findPetByPetId(Long petId);
+
+    // Поиск питомца по name и petType
+    Pet findPetByNameAndPetType(String name, PetType petType);
 }

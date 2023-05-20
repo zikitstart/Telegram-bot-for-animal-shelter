@@ -2,6 +2,7 @@ package animal_shelter.telegram_bot_for_animal_shelter.repository;
 
 import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
 import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
+import animal_shelter.telegram_bot_for_animal_shelter.model.Pet;
 import animal_shelter.telegram_bot_for_animal_shelter.model.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,7 @@ public interface ClientDetailsRepository extends JpaRepository<ClientDetails, Lo
 
     // Поиск усыновителей, находящихся в ожидании
     List<ClientDetails> findClientDetailsByWasNotifiedOfStatusChangeAndStatus(boolean wasNotifiedOfStatusChange, Status status);
+
+    //Поиск усыновителя по clientId и petId
+    ClientDetails findClientDetailsByClientIdAndPetId(Client clientId, Pet petId);
 }

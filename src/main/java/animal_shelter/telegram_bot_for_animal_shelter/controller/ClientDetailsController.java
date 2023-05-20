@@ -2,11 +2,11 @@ package animal_shelter.telegram_bot_for_animal_shelter.controller;
 
 import animal_shelter.telegram_bot_for_animal_shelter.model.Client;
 import animal_shelter.telegram_bot_for_animal_shelter.model.ClientDetails;
+import animal_shelter.telegram_bot_for_animal_shelter.model.enums.Status;
 import animal_shelter.telegram_bot_for_animal_shelter.service.impl.ClientDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
@@ -44,9 +44,11 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<ClientDetails> createClient(@RequestBody ClientDetails clientDetails){
-        clientDetailsService.createClientDetails(clientDetails);
-        return ResponseEntity.ok(clientDetails);
+    public ResponseEntity<ClientDetails> createClient(@RequestParam Long clientId, @RequestParam Long petId, @RequestParam Status status, @RequestParam String startDate, @RequestParam boolean wasNotifiedOfStatusChange) {
+        if (clientDetailsService.getClientDetailsByClientIdAndPetId(clientId, petId) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(clientDetailsService.createClientDetails(clientId, petId, status, startDate, wasNotifiedOfStatusChange));
     }
 
     @PutMapping
@@ -66,12 +68,11 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<ClientDetails> updateClient(@RequestBody ClientDetails clientDetails){
-        if (clientDetailsService.getClientDetailsByClientDetailsId(clientDetails.getClientDetailsId()) ==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    public ResponseEntity<ClientDetails> updateClient(@RequestParam Long clientId, @RequestParam Long petId, @RequestParam Status status, @RequestParam String startDate, @RequestParam boolean wasNotifiedOfStatusChange) {
+        if (clientDetailsService.getClientDetailsByClientIdAndPetId(clientId, petId) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        clientDetailsService.updateClientDetails(clientDetails);
-        return ResponseEntity.ok(clientDetails);
+        return ResponseEntity.ok(clientDetailsService.updateClientDetails(clientId, petId, status, startDate, wasNotifiedOfStatusChange));
     }
 
     @GetMapping("/extra")
@@ -91,14 +92,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsWithExtraPeriod(){
+    public ResponseEntity<List<ClientDetails>> getClientsWithExtraPeriod() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsWithExtraPeriod();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/actual")
     @Operation(
             summary = "Получение актуальных клиентов",
@@ -116,14 +117,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getActualClients(){
+    public ResponseEntity<List<ClientDetails>> getActualClients() {
         List<ClientDetails> clientDetails = clientDetailsService.getActualClients();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/without-today-report")
     @Operation(
             summary = "Получение клиентов, которые не прислали отчет",
@@ -141,14 +142,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsWithoutTodayReport(){
+    public ResponseEntity<List<ClientDetails>> getClientsWithoutTodayReport() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsWithoutTodayReport();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/without-report")
     @Operation(
             summary = "Получение клиентов, которые не прислали отчет два дня",
@@ -166,14 +167,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsWithoutReportsForLastTwoDays(){
+    public ResponseEntity<List<ClientDetails>> getClientsWithoutReportsForLastTwoDays() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsWithoutReportsForLastTwoDays();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/end-trial-period")
     @Operation(
             summary = "Получение клиентов, которые закончили TRIAL период",
@@ -191,14 +192,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsWhoEndTheirTrialPeriod(){
+    public ResponseEntity<List<ClientDetails>> getClientsWhoEndTheirTrialPeriod() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsWhoEndTheirTrialPeriod();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/end-14-period")
     @Operation(
             summary = "Получение клиентов, которые закончили EXTRA-14 период",
@@ -216,14 +217,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsWhoEndTheirExtra14Period(){
+    public ResponseEntity<List<ClientDetails>> getClientsWhoEndTheirExtra14Period() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsWhoEndTheirExtra14Period();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/end-30-period")
     @Operation(
             summary = "Получение клиентов, которые закончили EXTRA-30 период",
@@ -241,14 +242,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsWhoEndTheirExtra30Period(){
+    public ResponseEntity<List<ClientDetails>> getClientsWhoEndTheirExtra30Period() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsWhoEndTheirExtra30Period();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/in-status-decision")
     @Operation(
             summary = "Получение клиентов, которые в ожидании",
@@ -266,14 +267,14 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsInStatusWaitFoForDecision(){
+    public ResponseEntity<List<ClientDetails>> getClientsInStatusWaitFoForDecision() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsInStatusWaitForDecision();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
     }
+
     @GetMapping("/decision")
     @Operation(
             summary = "Получение клиентов, у которых волонтер сменил статус",
@@ -291,12 +292,35 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<List<ClientDetails>> getClientsWhoMustGetDecision(){
+    public ResponseEntity<List<ClientDetails>> getClientsWhoMustGetDecision() {
         List<ClientDetails> clientDetails = clientDetailsService.getClientsWhoMustGetNotificationAboutStatusChange();
-        if (clientDetails == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(clientDetails);
+        if (clientDetails == null || clientDetails.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok(clientDetails);
+    }
+
+    @DeleteMapping("{id}")
+    @Operation(
+            summary = "Удаление усыновителя.",
+            description = "Метод для удаления данных усыновителя по clientDetailsId."
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Усыновитель удалён.",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<ClientDetails> deleteClient(@RequestParam("id") Long clientDetailsId) {
+        if (clientDetailsService.getClientDetailsByClientDetailsId(clientDetailsId) == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(clientDetailsService.deleteClientDetails(clientDetailsId));
     }
 }

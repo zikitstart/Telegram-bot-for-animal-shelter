@@ -35,23 +35,27 @@ public class Pet {
     @Type(type = "pgsql_enum")
     private PetType petType;
 
-    @OneToOne(mappedBy = "petId")
-    private ClientDetails clientDetailsId;
-
     @ManyToOne
     @JoinColumn(name = "shelter_id", nullable = false)
     private Shelter shelterId;
+
+    public Pet(Integer ageInMonths, String name, PetType petType, Shelter shelterId) {
+        this.ageInMonths = ageInMonths;
+        this.name = name;
+        this.petType = petType;
+        this.shelterId = shelterId;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
-        return Objects.equals(petId, pet.petId) && Objects.equals(ageInMonths, pet.ageInMonths) && Objects.equals(name, pet.name) && petType == pet.petType && Objects.equals(clientDetailsId, pet.clientDetailsId) && Objects.equals(shelterId, pet.shelterId);
+        return Objects.equals(petId, pet.petId) && Objects.equals(ageInMonths, pet.ageInMonths) && Objects.equals(name, pet.name) && petType == pet.petType && Objects.equals(shelterId, pet.shelterId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(petId, ageInMonths, name, petType, clientDetailsId, shelterId);
+        return Objects.hash(petId, ageInMonths, name, petType, shelterId);
     }
 }
