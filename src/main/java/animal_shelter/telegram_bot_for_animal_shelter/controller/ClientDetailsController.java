@@ -44,7 +44,7 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<ClientDetails> createClient(@RequestParam Long clientId, @RequestParam Long petId, @RequestParam Status status, @RequestParam String startDate, @RequestParam boolean wasNotifiedOfStatusChange) {
+    public ResponseEntity<ClientDetails> createClientDetails(@RequestParam Long clientId, @RequestParam Long petId, @RequestParam Status status, @RequestParam String startDate, @RequestParam boolean wasNotifiedOfStatusChange) {
         if (clientDetailsService.getClientDetailsByClientIdAndPetId(clientId, petId) != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -68,7 +68,7 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<ClientDetails> updateClient(@RequestParam Long clientId, @RequestParam Long petId, @RequestParam Status status, @RequestParam String startDate, @RequestParam boolean wasNotifiedOfStatusChange) {
+    public ResponseEntity<ClientDetails> updateClientDetails(@RequestParam Long clientId, @RequestParam Long petId, @RequestParam Status status, @RequestParam String startDate, @RequestParam boolean wasNotifiedOfStatusChange) {
         if (clientDetailsService.getClientDetailsByClientIdAndPetId(clientId, petId) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -317,7 +317,7 @@ public class ClientDetailsController {
                     )
             }
     )
-    public ResponseEntity<ClientDetails> deleteClient(@RequestParam("id") Long clientDetailsId) {
+    public ResponseEntity<ClientDetails> deleteClientDetails(@RequestParam("id") Long clientDetailsId) {
         if (clientDetailsService.getClientDetailsByClientDetailsId(clientDetailsId) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

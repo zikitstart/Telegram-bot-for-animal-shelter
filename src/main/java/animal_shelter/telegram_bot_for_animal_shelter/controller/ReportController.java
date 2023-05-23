@@ -44,9 +44,9 @@ public class ReportController {
                     )
             }
     )
-    public ResponseEntity<Report> getReport(@PathVariable Long id){
+    public ResponseEntity<Report> getReportByPetId(@PathVariable Long id){
         Pet pet = petService.getPet(id);
-        Report report = reportService.getReport(pet.getPetId());
+        Report report = reportService.getReportByPetId(pet.getPetId());
         return ResponseEntity.ok(report);
     }
     @DeleteMapping("{id}")

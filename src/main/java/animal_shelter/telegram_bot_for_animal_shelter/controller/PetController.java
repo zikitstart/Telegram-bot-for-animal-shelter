@@ -114,7 +114,7 @@ public class PetController {
                     )
             }
     )
-    public ResponseEntity<List<Pet>> getPetByType(@RequestParam("petId") PetType petType) {
+    public ResponseEntity<List<Pet>> getPetsByType(@RequestParam("petId") PetType petType) {
         List<Pet> pets = petService.getPetsByTypes(petType);
         if (pets == null || pets.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -23,9 +23,9 @@ class ClientControllerTest {
 
     @BeforeEach
     void setUp() {
-        client1 = new Client(1L,"Ковалёв","Сергей","Петрович","234-56-78", PetType.CAT);
-        client2 = new Client(2L, "Ковалёв", "Сергей", "Петрович", "234-56-78", PetType.DOG);
-        client3 = new Client(3L, "Ковалёв", "Сергей", "Петрович", "234-56-78", PetType.DOG);
+        client1 = new Client(1L, 1L, "Ковалёв", "Сергей", "Петрович", "234-56-78", PetType.CAT);
+        client2 = new Client(2L, 2L, "Ковалёв", "Сергей", "Петрович", "234-56-78", PetType.DOG);
+        client3 = new Client(3L, 3L, "Ковалёв", "Сергей", "Петрович", "234-56-78", PetType.DOG);
 
         clients = Arrays.asList(client1, client2, client3);
     }
@@ -33,18 +33,18 @@ class ClientControllerTest {
     @Test
     @DisplayName("When an object is created with parameters passed to it, then true")
     void createClient() {
-        Client clientExpected = new Client(1L,"Ковалёв","Сергей","Петрович","234-56-78",PetType.CAT);
-        assertEquals(clientExpected,client1);
+        Client clientExpected = new Client(1L, 1L, "Ковалёв", "Сергей", "Петрович", "234-56-78", PetType.CAT);
+        assertEquals(clientExpected, client1);
     }
 
     @Test
     @DisplayName("When an object is update with parameters passed to it, then true")
     void updateClient() {
-        Client clientExpected = new Client(2L,"Ковалёв","Пётр","Петрович","234-56-78", PetType.DOG);
+        Client clientExpected = new Client(1L, 2L, "Ковалёв", "Пётр", "Петрович", "234-56-78", PetType.DOG);
         client1.setChatId(2L);
         client1.setFirstName("Пётр");
         client1.setPetType(PetType.DOG);
-        assertEquals(clientExpected,client1);
+        assertEquals(clientExpected, client1);
     }
 
     @Test
@@ -52,11 +52,11 @@ class ClientControllerTest {
     void getClientByChatIdAndPetType() {
         Client clientExpected = null;
         for (Client user : clients) {
-            if (user.getChatId().equals(1L) && user.getPetType().equals(PetType.CAT)){
+            if (user.getChatId().equals(1L) && user.getPetType().equals(PetType.CAT)) {
                 clientExpected = user;
             }
         }
-        assertEquals(clientExpected,client1);
+        assertEquals(clientExpected, client1);
     }
 
     @Test
@@ -64,10 +64,19 @@ class ClientControllerTest {
     void getClientByChatId() {
         Client clientExpected = null;
         for (Client user : clients) {
-            if (user.getChatId().equals(1L)){
+            if (user.getChatId().equals(1L)) {
                 clientExpected = user;
             }
         }
-        assertEquals(clientExpected,client1);
+        assertEquals(clientExpected, client1);
+    }
+
+    @Test
+    @DisplayName("When we find an object by userId, then delete object")
+    void deleteClient() {
+        List<Client> clientsExpected = List.of(client1, client2);
+        List<Client> clientsActual = new ArrayList<>(List.of(client1, client2, client3));
+        clientsActual.removeIf(client -> client.getUserId().equals(3L));
+        assertEquals(clientsExpected, clientsActual);
     }
 }
