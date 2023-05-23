@@ -22,7 +22,7 @@ public class ReportServiceImpl implements ReportService {
 
     // Получение отчёта по id
     @Override
-    public Report getReport(Long id) {
+    public Report getReportByPetId(Long id) {
         return reportRepository.findReportByPetId(id);
     }
 

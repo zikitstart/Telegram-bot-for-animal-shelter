@@ -5,7 +5,7 @@ import animal_shelter.telegram_bot_for_animal_shelter.model.Report;
 public interface ReportService {
     Report createReport(Report report);
 
-    Report getReport(Long id);
+    Report getReportByPetId(Long id);
 
     Report getReportByReportId(Long id);
 
