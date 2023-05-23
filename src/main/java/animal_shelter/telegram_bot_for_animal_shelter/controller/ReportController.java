@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/report")
 @RestController
 // Контроллер для работы с отчётами
@@ -44,10 +46,13 @@ public class ReportController {
                     )
             }
     )
-    public ResponseEntity<Report> getReportByPetId(@PathVariable Long id){
+    public ResponseEntity<List<Report>> getReportByPetId(@PathVariable Long id){
         Pet pet = petService.getPet(id);
-        Report report = reportService.getReportByPetId(pet.getPetId());
-        return ResponseEntity.ok(report);
+        List<Report> reports = reportService.getReportByPetId(pet.getPetId());
+        if (reports == null || reports.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(reports);
     }
     @DeleteMapping("{id}")
     @Operation(
